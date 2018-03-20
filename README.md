@@ -1,1 +1,1 @@
-# EOEPHackathon2018
+# Earth Observation Exploitation Platform Hackathon 2018
