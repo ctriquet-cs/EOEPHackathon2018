@@ -2,15 +2,15 @@
 
 ## Sponsors & Participants
 Participants:
-1. Solenix
-2. SpaceApplications
-3. Vito
-4. C-S
-5. Thalesaleniaspace
-6. Eurac
-7. University of Timisoara
-8. 52north
-9. Sixsq
+1. Solenix, Germany
+2. Space Applications Services, Belgium
+3. Vito, Belgium
+4. CS SI, France
+5. Thales Alenia Space, Spain
+6. Eurac Research, Italy
+7. West University of Timisoara and Institute e-Austria Timisoara, Romania
+8. 52north, Germany
+9. Sixsq, Switzerland
 
 Sponsors
 1. ESA
