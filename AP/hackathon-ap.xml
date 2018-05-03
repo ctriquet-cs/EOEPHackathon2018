@@ -1,19 +1,19 @@
-				<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:owc="http://www.opengis.net/owc/1.0" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xml:lang="en">
-    <link rel="profile" href="http://www.opengis.net/spec/owc-atom/1.0/req/core" title="This file is compliant with version 1.0 of OGC Context"/>
-    <link rel="profile" href="http://www.opengis.net/tb13/eoc" title="This file is compliant with Testbed-13 EOC Thread for Application Packing"/>
-    <id>http://www.opengis.net/tb13/eoc/examples/app_pkg/dcs-stemp-s2</id>
-    <title>EOC Land Cover Application Package</title>
-    <subtitle type="text">Landcover EOC APP PKG</subtitle>
-    <updated>2017-10-19T10:00:00Z</updated>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:owc="http://www.opengis.net/owc/1.0" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xml:lang="en">
+    <link rel="profile" href="http://www.opengis.net/spec/owc-atom/1.0/req/core" title="This file is compliant with version 1.0 of OWS Context"/>
+    <link rel="profile" href="http://www.opengis.net/tb13/eoc" title="This file is compliant with Testbed-13 EOC Thread for Application Packaging"/>
+    <id>http://www.opengis.net/eoephack2018/burnscar</id>
+    <title>Application Package for Burn Scar Detection application</title>
+    <subtitle type="text">Burn Scar Detection</subtitle>
+    <updated>2018-05-03T18:25:00Z</updated>
     <author>
-        <name>Christophe Noel (Spacebel)</name>
+        <name>Paulo Sacramento</name>
     </author>
-    <rights>OGC Testbed 13 EOC Thread</rights>
+    <rights>-</rights>
     <entry>
-        <title>EOC Land Cover Application</title>
-        <id>http://www.opengis.net/tb13/eoc/LandCover</id>
-        <updated>2017-09-04T15:23:09Z</updated>
-        <content type="html">EOC Land Cover Application &lt;br/&gt; Lang Cover Mapping is based on the Sentinel-2 processing workflow generated for the F-TEP platform.</content>
+        <title>Burn Scar Detection Application for OGC EOEP Hackathon 2018</title>
+        <id>http://www.opengis.net/eoephack2018/burnscar</id>
+        <updated>2018-05-03T18:25:00Z</updated>
+        <content type="html">Burn Scar Detection Application for OGC EOEP Hackathon 2018 &lt;br/&gt; This application detects burn scars over a Summer period on Canada's Northwestern Territories, using Sentinel data.</content>
         <!-- DockerImage offering -->
         <owc:offering code="http://www.opengis.net/tb13/eoc/docker">
             <owc:content type="text/plain">registry.hub.docker.com/cnlspacebel/landcover</owc:content>
@@ -25,9 +25,9 @@
             <owc:content type="application/xml">
                 <wps:ProcessOffering jobControlOptions="async-execute dismiss" outputTransmission="value reference" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:wps="http://www.opengis.net/wps/2.0" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <wps:Process>
-                        <ows:Title>Land Cover Mapping</ows:Title>
-                        <ows:Abstract>Lang Cover Mapping is based on the Sentinel-2 processing workflow generated for the F-TEP platform.</ows:Abstract>
-                        <ows:Identifier>LandCover</ows:Identifier>
+                        <ows:Title>Burn Scar Detection</ows:Title>
+                        <ows:Abstract>This application detects burn scars over a Summer period on Canada's Northwestern Territories, using Sentinel data.</ows:Abstract>
+                        <ows:Identifier>BurnScar</ows:Identifier>
                         <wps:Input>
                             <ows:Title>Area Of Interest</ows:Title>
                             <ows:Abstract>Area of interest (AOI) as a WKT POLYGON text string.</ows:Abstract>
@@ -73,7 +73,7 @@
         <title>OpenSearch Collections</title>
         <id>http://www.opengis.net/tb13/eoc/OS_Collections</id>
         <updated>2017-09-04T15:23:09Z</updated>
-        <content type="html">EOC OpenSearch Collections &lt;br/&gt; Lang Cover Mapping is based on the Sentinel-2 data that can be discovered using several locations.</content>
+        <content type="html">EOC OpenSearch Collections</content>
         <!-- OpenSearch offering for Spacebel -->
         <owc:offering code="http://www.opengis.net/spec/owc-atom/1.0/opensearch">
             <owc:content type="application/opensearchdescription+xml" href="https://finder.eocloud.eu/resto/api/collections/Sentinel1/describe.xml"/>
