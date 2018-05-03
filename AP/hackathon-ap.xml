@@ -43,25 +43,37 @@
                             </wps:LiteralData>
                         </wps:Input>
                         <wps:Input>
-                            <ows:Title>Time Of Interest</ows:Title>
-                            <ows:Abstract>Time of Interest as text string start/end.</ows:Abstract>
-                            <ows:Identifier>TimeOfInterest</ows:Identifier>
+                            <ows:Title>Start Time Of Interest</ows:Title>
+                            <ows:Abstract>Start Time of Interest for the processing, as an RFC 3339 date-time text string. Example: 1990-12-31T23:59:60Z</ows:Abstract>
+                            <ows:Identifier>StartTimeOfInterest</ows:Identifier>
                             <wps:LiteralData>
-                                <!-- Not sure if WKT has a MIME type -->
                                 <wps:Format mimeType="text/plain" default="true"/>
                                 <LiteralDataDomain default="true">
                                     <ows:AnyValue/>
                                     <ows:DataType ows:reference="http://www.w3.org/2001/XMLSchema#string">String</ows:DataType>
-                                    <ows:DefaultValue>2017-06-17T00:00:00Z/2017-06-28T23:59:59Z</ows:DefaultValue>
+                                    <ows:DefaultValue>2017-06-17T00:00:00Z</ows:DefaultValue>
+                                </LiteralDataDomain>
+                            </wps:LiteralData>
+                        </wps:Input>
+                        <wps:Input>
+                            <ows:Title>Stop Time Of Interest</ows:Title>
+                            <ows:Abstract>Stop Time of Interest for the processing, as an RFC 3339 date-time text string. Example: 1990-12-31T23:59:60Z</ows:Abstract>
+                            <ows:Identifier>StopTimeOfInterest</ows:Identifier>
+                            <wps:LiteralData>
+                                <wps:Format mimeType="text/plain" default="true"/>
+                                <LiteralDataDomain default="true">
+                                    <ows:AnyValue/>
+                                    <ows:DataType ows:reference="http://www.w3.org/2001/XMLSchema#string">String</ows:DataType>
+                                    <ows:DefaultValue>2017-06-28T23:59:59Z</ows:DefaultValue>
                                 </LiteralDataDomain>
                             </wps:LiteralData>
                         </wps:Input>
 				        <wps:Output>
-                            <ows:Title>GeoTIF Image</ows:Title>
-                            <ows:Abstract>Labeled GeoTIF file containing, for each pixel, one of the class codes specified in the training reference data.</ows:Abstract>
-                            <ows:Identifier>Image</ows:Identifier>
+                            <ows:Title>Result URL (TIF file)</ows:Title>
+                            <ows:Abstract>URL pointing to result (GeoTIF file)</ows:Abstract>
+                            <ows:Identifier>ResultURL</ows:Identifier>
                             <wps:ComplexData>
-                                <wps:Format mimeType="image/tiff" default="true"/>
+                                <wps:Format mimeType="text/url" default="true"/>
                             </wps:ComplexData>
                         </wps:Output>
                     </wps:Process>
