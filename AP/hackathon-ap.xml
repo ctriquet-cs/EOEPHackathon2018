@@ -93,7 +93,7 @@
 			    <query>
                        <map key="AreaOfInterest" value="geometry" />
                        <map key="StartTimeOfInterest" value="startDate"/>
-                       <map key="StopTimeOfInterest" value="stopDate"/>
+                       <map key="StopTimeOfInterest" value="completionDate"/>
 			    </query>
 			    <inputs>
 			        <map key="image" value="features[*].properties.productIdentifier" />
