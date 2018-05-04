@@ -38,7 +38,7 @@
                                 <LiteralDataDomain default="true">
                                     <ows:AnyValue/>
                                     <ows:DataType ows:reference="http://www.w3.org/2001/XMLSchema#string">String</ows:DataType>
-                                    <ows:DefaultValue>POLYGON((70 -140, 58 -140, 58 -100, 70 -100, 70 -140))</ows:DefaultValue>
+                                    <ows:DefaultValue>POLYGON((-144.481201171875+61.17503266354876,-137.25494384765625+81.77855465768286,-87.18475341796876+81.05293803613603,-96.30752563476564+53.37267859256934,-144.481201171875+61.17503266354876))</ows:DefaultValue>
                                 </LiteralDataDomain>
                             </wps:LiteralData>
                         </wps:Input>
