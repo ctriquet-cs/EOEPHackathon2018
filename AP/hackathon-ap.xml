@@ -71,7 +71,7 @@
 				        <wps:Output>
                             <ows:Title>Result URL (TIF file)</ows:Title>
                             <ows:Abstract>URL pointing to result (GeoTIF file)</ows:Abstract>
-                            <ows:Identifier>ResultURL</ows:Identifier>
+                            <ows:Identifier>Image</ows:Identifier>
                             <wps:ComplexData>
                                 <wps:Format mimeType="text/url" default="true"/>
                             </wps:ComplexData>
