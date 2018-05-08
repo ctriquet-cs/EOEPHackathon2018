@@ -1,0 +1,6 @@
+[[KeyFindings]]
+== Key Findings
+
+[#img_mindMap,reftext='{figure-caption} {counter:figure-num}']
+.High-Level Mind Map of Testbed-14
+image::images/t14MindMap.png[width=800,align="center"]
