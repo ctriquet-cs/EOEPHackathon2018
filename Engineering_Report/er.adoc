@@ -29,11 +29,6 @@
 :workingGroup: Big Data DWG
 
 // *****************************************************************************
-// End of Editor's front-matter elements.
-// Editors please continue at "include::2-references.adoc[]" below.
-// *****************************************************************************
-
-// *****************************************************************************
 // Editors please do not alter the administrative front matter below.
 // *****************************************************************************
 :publicationDate: YYYY-MM-DD
@@ -86,17 +81,17 @@ include::0-preface.adoc[]
 
 include::1-summary.adoc[]
 
-include::2-references.adoc[]
+include::1.1-references.adoc[]
 
-include::3-terms.adoc[]
+include::1.2-terms.adoc[]
 
-include::4-Introduction.adoc[]
+include::2-Introduction.adoc[]
 
-include::5-KeyFindings.adoc[]
+include::3-KeyFindings.adoc[]
 
-include::6-ImplementationChallenge.adoc[]
+include::4-ImplementationChallenge.adoc[]
 
-include::7-Solutions.adoc[]
+include::5-Solutions.adoc[]
 
 
 
