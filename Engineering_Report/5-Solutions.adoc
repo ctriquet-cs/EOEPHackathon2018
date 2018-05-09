@@ -1,0 +1,11 @@
+[[Solutions]]
+== Solutions
+// summary Ingo
+
+include::5-1-52north.adoc[]
+include::5-2-CS.adoc[]
+include::5-3-Eurac.adoc[]
+include::5-4-Solenix.adoc[]
+include::5-5-SpaceApplications.adoc[]
+include::5-6-UTimisoara.adoc[]
+include::5-7-VITO.adoc[]
