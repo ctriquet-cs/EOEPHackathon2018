@@ -46,7 +46,7 @@ Participants have been free to deviate from the architecture outlined above as l
 === Hackathon Participants
 The following organizations participated in the Hackathon as sponsors, organizers, participants, cloud providers, or observers. Organizations marked with '(*)' did participate in the Testbed-13 Earth Observation Cloud activities.
 
-.Participating organizations*
+.Participating organizations
 [width="90%",cols="20,30,40"]
 |====================
 | ESA (*)   |  52north     | West University of Timisoara

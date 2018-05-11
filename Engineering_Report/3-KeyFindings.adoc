@@ -44,5 +44,33 @@ CloudFerro: http://finder.eocloud.eu/resto/api/collections/Sentinel1/search.atom
 
 It is currently impossible for a developer to produce a response module that could process responses from arbitrary catalogs. The response structure is always different, the response terminology is non-homogeneous, and the actual paths to the data differ from one cloud platform to the other. OWS-Context provides some mitigation options, as at least terminology mappings can be described, but standardization should address this issue in a more robust way by either developing a set of conventions, or even better to include commonly used terms in the specification directly. It cannot be expected that mediation and mapping technologies coming from the Semantic Web can solve this issue within the foreseeable future.
 
-=== Kubernetes, Fargate, ECS, Mesos
-tbd
+=== Kubernetes, Fargate, EKS, Mesos, Docker, Marathon
+There is lots of dynamic in the cloud platform market at the moment. Tools that have been state of the art just a little while ago a now superseded by tools that are even simpler to use, more user friendly, better scalable, cheaper, more robust, or better integrated with other services. At the Hackathon, several of these technologies have been discussed. The following table gives a brief overview of these technologies. Discussing and comparing these technologies is not simple. There are lots of articles or blog posts and an endless amount of social chatter available describing and comparing these technologies. You find a lot of information, often infused with marketing jargon and consultation offers, on what some call the fight-to-the death for container supremacy whereas others claim that the various technologies often solve different things and are rooted in very different contexts. If there is one thing to learn, then certainly to be very careful before building any complex system that is strictly bound to one or a specific set of technologies, tools, or platforms.
+
+.cloud technologies
+[width="90%",cols="30,70"]
+|====================
+| https://www.docker.com/[Docker]
+| Docker groups some of the capabilities of Linux cgroups with namespaces into a single and easy to use package that allows applications to run consistently on any infrastructure. The package is called the Docker image, which allows to package the application together with required libraries into a single container.
+
+| https://aws.amazon.com/eks/[EKS]
+| Amazon Elastic Container Service for Kubernetes (Amazon EKS) is a managed Kubernetes service. It uses Amazon https://aws.amazon.com/iam/[Identity and Access Management (IAM)] for role based access control, https://aws.amazon.com/about-aws/whats-new/2017/11/introducing-aws-privatelink-for-aws-services/[PrivateLink] to reach your masters, and Amazon Virtual Private Cloud (VPC) for pod networking.
+
+| https://aws.amazon.com/fargate/[Fargate]
+|  Fargate is an Amazon technology to run containers, either orchestrated by ECS or Kubernetes on EKS, without having to manage the underlying servers or clusters (i.e. EC2 instances.), which makes containers a first-class resource.
+
+| https://kubernetes.io/[Kubernetes]
+|  Kubernetes is a clustered container orchestration system that automates the creation, replication, scaling and management of Docker containers.
+
+| https://mesosphere.github.io/marathon/[Marathon]
+| Marathon is a production-grade container orchestration platform for Mesosphere’s Datacenter Operating System (DC/OS) and Apache Mesos.
+
+| https://mesos.apache.org/[Mesos]
+| Apache Mesos abstracts CPU, memory, storage, and other compute resources away from machines (physical or virtual), enabling fault-tolerant and elastic distributed systems to easily be built and run effectively.
+|====================
+
+When investigating favored technologies that are used in applied research projects or system developments, it seems that Docker is the common denominator. Docker containers running in production environments need to be orchestrated across multiple machines; and with the orchestration engines things divert. One of the first orchestration engines was https://mesosphere.github.io/marathon/[Marathon] on top of https://mesos.apache.org/[Apache Mesos]. Now we do have https://www.nomadproject.io/[Nomad], http://kubernetes.io/[Kubernetes], or https://docs.docker.com/engine/swarm/[Docker Swarm], which is now part of Docker Engine.
+
+The container technology Docker (i.e. the file format and runtime engine) was quickly complemented with additional technologies, such as Docker Hub, Docker Registry, Docker Cloud or Docker Datacenter. Docker Hub allows public storage of Docker images whereas the Docker Registry can be used for storing it on-premise. Docker Cloud is a managed service for building and running containers and the Docker Datacenter is a commercial offering embodying many Docker technologies. And quickly we are on the market. That's where the jargon and market speak starts and true believers espousing their faith are burning heretics who would dare to consider alternatives.
+
+Kubernetes is a technology introduced by Google. It allows to orchestrate Docker containers without having to interact with the underlying infrastructure. It provides a standard deployment interface and primitives for a consistent app deployment experience and APIs across clouds, which can be very useful in our context of deploying and executing applications working on Earth observation data stored on mission exploitation platforms. Kubernetes modular API allows to integrate systems around the core Kubernetes technology.
