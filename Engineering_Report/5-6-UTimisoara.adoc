@@ -1,4 +1,4 @@
-+[[UTimisoara]]
+[[UTimisoara]]
 === Western University of Timisoara
 
 // Please provide content under the headlines given below. Please delete the instructions. At the bottom, you find some instructions on ASCIIDOC.

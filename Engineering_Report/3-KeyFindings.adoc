@@ -16,6 +16,7 @@ Testbed-13 discussed three options to encode an implementation package:
 Then first approach uses OWS-Context to encode the AP. WPS _ProcessDescriptor_ elements are embedded. This approach has the advantage that
 
 * the developer can add any additional information to the AP that can be used by sophisticated clients to visualize e.g. background maps as part of the graphical consumer interaction interface
+* the developer can add specific mappings to the AP file which might be necessary in order to work with different catalogs (that the application consumer can use to identify the data to be processed). The mappings are necessary because many OpenSearch-based catalogs use different terminology for both request and response parameter (see section <<OpenSearch>> for further details).
 * we remain independent of WPS. If, for whatever reason, we need to remove WPS in the future to replace it with some new technology, this can be easily done without breaking the overall concept of APs and AP-handling services
 
 On the disadvantage side, one can argue that OWS-Context adds additional complexity to the AP that is not absolutely necessary. It requires the AP developer to read and understand yet another standard without gaining much. After some discussion, this aspect has been solved by agreeing on two aspects. Either tools will be developed that guide the AP developer through the process. Think of a kind of wizard that requests essential elements from the AP developer and produces the AP as a result. In this case, the application developer never sees the actual AP code. Alternatively, application developers will follow examples of existing APs and realize that the OWS-Context add some elements, but do not cause any harm during AP development. In any case, we need to have a feedback channel for AP developers to ensure that the additional flexibility gained with OWS-Context comes at minimum costs for the AP developer.
@@ -24,11 +25,24 @@ On the disadvantage side, one can argue that OWS-Context adds additional complex
 === Microservice Approach
 The currently favored architectural approach uses Application Package for application description and deployment; and WPS for process registration, deployment and execution. It  has been developed based on the target to minimize extra work for the application developer. All the application developer needs to do is to run a simple command line command to package the application in a Docker container, to upload this container to a Docker hub and to provide the application package.
 
-A very interesting alternative approach follows a different paradigm. In the microservice approach, the developer is familiar with WPS and provides 
+A very interesting alternative approach follows a different paradigm. In the microservice approach, the developer is familiar with WPS and provides everything required to execute the application in the cloud programatically. Using IAAS/PAAS solutions such as Kubernetes or Amazon, the user produces a Docker container with a single process WPS embedded. This solution allows the application developer to take care of all data mountings and mappings following his own preferences. The Docker container could then be deployed on cloud platforms.
 
+The approach was developed by VITO and is described in more detail in <<VITO, this chapter>>.
 
 
 === External Data Mounting
 tbd
 
+[[OpenSearch]]
+=== OpenSearch Based Catalogs
+It turned out that many OpenSearch based catalogs use different terminology for both request and response parameters. As an example, some catalogs require the request parameter "start", where others require it to be "startDate". The same applies to the responses, as illustrated in the following examples:
+
+The following queries are requesting the same data. Note the different parameter names:
+VITO: http://www.vito-eodata.be/openSearch_all/findProducts?collection=urn:eop:VITO:CGS_S1_SLC_L1&start=2018-01-01
+
+CloudFerro: http://finder.eocloud.eu/resto/api/collections/Sentinel1/search.atom?startDate=2018-01-01&_pretty=true
+
+It is currently impossible for a developer to produce a response module that could process responses from arbitrary catalogs. The response structure is always different, the response terminology is non-homogeneous, and the actual paths to the data differ from one cloud platform to the other. OWS-Context provides some mitigation options, as at least terminology mappings can be described, but standardization should address this issue in a more robust way by either developing a set of conventions, or even better to include commonly used terms in the specification directly. It cannot be expected that mediation and mapping technologies coming from the Semantic Web can solve this issue within the foreseeable future.
+
 === Kubernetes, Fargate, ECS, Mesos
+tbd
