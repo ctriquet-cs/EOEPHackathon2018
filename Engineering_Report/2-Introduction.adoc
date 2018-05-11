@@ -12,7 +12,7 @@ In particular the first two Engineering Reports state several alternatives and p
 The challenge was rather straight forward: Take an arbitrary application, store this application in a Docker container, describe this application with the necessary detail to allow standards-based automated deployment and execution, and then register this application with a Web service that allows executing the workflow publicly. Then, pretend to be another user, execute the application in the cloud and access the results.
 
 ==== Use Case
-The use case required to process a collection of Sentinel 1 RADAR data for the Northwest Territories (NWT) at the beginning and the end of the 2017 summer. Large wildfires occurred in 2013, 2014 and 2015 in this reason, and the application should allow spatially-extensive, timely and cost effective wildfire mapping and monitoring to better assess post-fire burns and tracking of impacts of disturbances on forestlands.
+The implemented use case is briefly outlined here and described in full detail in chapter <<ImplementationChallengeUseCase, Implementation Challenge, section UseCase>>. The use case describes a burn scare mapping scenario in Canada, where the extent of wild fires are analyzed based on radar data processing. The use case required to process a collection of Sentinel-1 radar data for the Northwest Territories (NWT) at the beginning and the end of the 2017 summer. Large wildfires occurred in 2013, 2014 and 2015 in this region, and the application should allow spatially-extensive, timely and cost effective wildfire mapping and monitoring to better assess post-fire burns and tracking of impacts of disturbances on forestlands.
 
 [#img_useCase,reftext='{figure-caption} {counter:figure-num}']
 .The use case required to process radar data over Canada's Northwest Territories,  a land area of approximately 1,144,000 km2 with a population of less than 50,000 people
@@ -23,11 +23,11 @@ Canada’s forest cover an area of 348 million hectares, which is 35% of Canada�
 === What was provided
 Organizers provided the Sentinel Application Platform (SNAP) Software Toolbox together with a pre-defined workflow packaged in a Docker container. Hackathon participants could use the Docker container "as is", i.e. there was no need to modify the container or the application. Given that the container included both SNAP and a executable SNAP graph, participants could on the hand execute the application independently of the available Docker image to test alternatives to the Testbed-13 solutions.
 
-The SNAP workflow in the Docker container required two types of data: Digital Elevation Model (DEM) data and Sentinel-1 data. Both have been made available to the participants as cloud resources. Natural Resources Canada provided a Canadian Digital Elevation Model (CDEM) for terrain correction due to lack of SRTM over 60deg North, ESA provided 128 Sentinel 1 scenes.
+The SNAP workflow in the Docker container required two types of data: Digital Elevation Model (DEM) data and Sentinel-1 data. Both have been made available to the participants as cloud resources. Natural Resources Canada provided a Canadian Digital Elevation Model (CDEM) for terrain correction due to lack of SRTM over 60° North, ESA provided 128 Sentinel-1 scenes.
 
 ==== Requested Solution
 
-The requested solution was based on the Testbed-13 results, which are illustrated in the figure below and briefly described in the following paragraphs. There was no exclusiveness, though. Participants could develop their own solution that deviated from the Testbed-13 base.
+The requested solution is defined in full detail in chapter <<ImplementationChallenge,Implementation Challenge>> and only briefly outlined here. The requested solution was based on the Testbed-13 results, which are illustrated in the figure below and briefly described in the following paragraphs. There was no exclusiveness, though. Participants could develop their own solution that deviated from the Testbed-13 base.
 
 [#img_t13Solution,reftext='{figure-caption} {counter:figure-num}']
 .Testbe-13 architecture. Grey elements have been ignored for the Hackathon
@@ -38,10 +38,9 @@ The application developer in the upper left corner packages the application toge
 ==== Possible Deviation
 Participants have been free to deviate from the architecture outlined above as long as the following requirements are met:
 
-* the application developer can make an application available in a container
-* any consumer can discover the application, and request its deployment and execution in the cloud
-
-
+* the application developer can make an application available in a container to the cloud platform
+* the application can be executed with a simple WPS execute() request, i.e. mounts the input data to the Docker mount points automatically, downloads necessary data, executes all processing steps, stores the results persistently on the cloud, and informs the user upon completion of the process
+* any consumer can discover the application and request its deployment and execution in the cloud
 
 
 === Hackathon Participants

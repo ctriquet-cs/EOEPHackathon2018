@@ -1,6 +1,34 @@
 [[KeyFindings]]
 == Key Findings
 
-[#img_mindMap,reftext='{figure-caption} {counter:figure-num}']
-.High-Level Mind Map of Testbed-14
-image::images/t14MindMap.png[width=800,align="center"]
+This chapter reviews architectural aspects that have been discussed at the Hackathon most intensively. Some of them identify potential alternative approaches to the solutions developed in Testbed-13, others help to answer open questions that had been identified at the end of Testbed-13.
+
+=== WPS works
+It was generally agreed that it makes perfect sense to facade any type of application with a WPS. Though, mixed opinions have been stated on the actual location of the WPS, which could be a service offered by the ADES, a service that is available per MEP, or integral part of the Docker container itself (see <<MicroService,microservice based approach>>).
+
+=== OWS-Context vs. WPD vs. QaDJSON
+Testbed-13 discussed three options to encode an implementation package:
+
+1. Using OWS-Context with embedded Web Processing Service _ProcessDescriptor_ elements
+2. Using Web Processing Service _ProcessDescriptor_ (WPD) elements exclusively, i.e. avoid OWS-Context
+3. Using a Quick and Dirty JSON (QaDJSON) representation, either based on some JSON Schema or following conventions
+
+Then first approach uses OWS-Context to encode the AP. WPS _ProcessDescriptor_ elements are embedded. This approach has the advantage that
+
+* the developer can add any additional information to the AP that can be used by sophisticated clients to visualize e.g. background maps as part of the graphical consumer interaction interface
+* we remain independent of WPS. If, for whatever reason, we need to remove WPS in the future to replace it with some new technology, this can be easily done without breaking the overall concept of APs and AP-handling services
+
+On the disadvantage side, one can argue that OWS-Context adds additional complexity to the AP that is not absolutely necessary. It requires the AP developer to read and understand yet another standard without gaining much. After some discussion, this aspect has been solved by agreeing on two aspects. Either tools will be developed that guide the AP developer through the process. Think of a kind of wizard that requests essential elements from the AP developer and produces the AP as a result. In this case, the application developer never sees the actual AP code. Alternatively, application developers will follow examples of existing APs and realize that the OWS-Context add some elements, but do not cause any harm during AP development. In any case, we need to have a feedback channel for AP developers to ensure that the additional flexibility gained with OWS-Context comes at minimum costs for the AP developer.
+
+[[MicroService]]
+=== Microservice Approach
+The currently favored architectural approach uses Application Package for application description and deployment; and WPS for process registration, deployment and execution. It  has been developed based on the target to minimize extra work for the application developer. All the application developer needs to do is to run a simple command line command to package the application in a Docker container, to upload this container to a Docker hub and to provide the application package.
+
+A very interesting alternative approach follows a different paradigm. In the microservice approach, the developer is familiar with WPS and provides 
+
+
+
+=== External Data Mounting
+tbd
+
+=== Kubernetes, Fargate, ECS, Mesos

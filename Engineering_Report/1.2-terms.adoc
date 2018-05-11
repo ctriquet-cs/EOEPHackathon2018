@@ -13,11 +13,15 @@ For the purposes of this report, the definitions specified in Clause 4 of the OW
 
 ===	Abbreviated terms
 
-.NOTE: The abbreviated terms clause gives a list of the abbreviated terms and the symbols necessary for understanding this document. All symbols should be listed in alphabetical order. Some more frequently used abbreviated terms are provided below as examples.
-
-* COM	Component Object Model
-* CORBA	Common Object Request Broker Architecture
-* COTS	Commercial Off The Shelf
-* DCE	Distributed Computing Environment
-* DCOM	Distributed Component Object Model
-* IDL	Interface Definition Language
+[width="90%",cols="30,70"]
+|====================
+| ADES  | Application Deployment and Execution Service
+| AP    | Application Package
+| EMS   | Exploitation Platform Management Service
+| EO    | Earth Observation
+| EP    | Exploitation Platform
+| MEP   | Mission Exploitation Platform
+| SOA   | Service Oriented Architecture
+| WPD   | Web Processing Service _ProcessDescriptor_
+| WPS   | Web Processing Service
+|====================
