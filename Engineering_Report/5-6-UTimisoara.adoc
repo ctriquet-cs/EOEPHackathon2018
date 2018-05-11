@@ -1,137 +1,106 @@
 [[UTimisoara]]
-=== Western University of Timisoara
+=== West University of Timisoara & Institute eAustria Timisoara
 
-// Please provide content under the headlines given below. Please delete the instructions. At the bottom, you find some instructions on ASCIIDOC.
+Marian Neagul | UVT
 
-// Please provide the name of all people you would like to have included in the list of contributing authors on top, following the pattern below:
-//Ingo Simonis | OGC
+Teodora Selea | UVT
+
+Silviu Panica | IeAT
+
 
 ==== Motivation to Participate
-// please describe briefly why you participated
+
+Our participation to the EOEP Hackathon was motivated by our aim of further
+extending the WPS 2.0 server developed as part of the ESA funded EO4SEE Project.
+
+Particularly we are interested in insuring interoperability with third-party WPS
+implementations and adherence to the recommendations originating from the Testbed
+activities.
 
 ==== Implemented Solution
-// please describe your implemented solution here. Provide as much detail as you think reasonable.
+Our solution involved introducing  a series of new conventions inside the
+Application Package, conventions agreed upon on-site during the Hackathon.
+Particularly the conventions have been endorsed by Solenix, 52North and VITO.
+The details of the modified Application Package are described in <<ap-and-ades>>
+
+The implemented solution demonstrated complete interaction between the AMC
+developed by Solenix and the EWPS Server provided by UVT and supported by IeAT.
+The solution demonstrated that interaction between the various components
+envisioned in Testbed13 is feasible.
+
+The demonstration presented at the Hackathon involved the execution of
+the complete application lifecycle:
+
+ - Application Deployment
+ - Application Execution
+ - Application UnDeployment
+
+It is worth mentioning that the triggered application execution successfully
+completed the proposed use-case scenario.
+Runtime information regarding the execution can be seen in <<img_ewps_execution>>
+
+[#img_ewps_execution,reftext='{figure-caption} {counter:figure-num}']
+.Application Execution Statistics
+image::images/ewps_execution_statistics.png[width=800,align="center"]
+
+===== Implementation
+
+The solution proposed by UVT and IeAT involved the deployment of EWPS and the
+required backend components on the IPT Poland cloud.
+
+From a high level perspective the our solution was composed out of:
+
+ - EWPS WPS 2.0 Server running as managed Marathon container
+ - https://github.com/twosigma/Cook[Cook Scheduler] managed by Marathon
+ providing job scheduling capabilities
+ - The https://mesosphere.github.io/marathon/[Marathon] container orchestration
+ framework
+ - http://mesos.apache.org/[Mesos] Mesos Cluster running on top of 12 nodes
+ providing compute resources
 
 ==== Proposed Alternatives
 // if you have any recommendations on other solutions, please describe them here
 
 ==== Experiences with AP & ADES
+[[ap-and-ades]]
 // please describe your experiences with the Application Package and the Application Deployment and Execution Service here.
+
+As part of the Hackathon we agreed together with the other participants
+(particularly Solenix, 52North, and VITO) an modified version of the
+https://github.com/opengeospatial/EOEPHackathon2018/blob/master/AP/hackathon-ap.xml[application package]
+
+The application package assumed the introduction of an `mapping` section inside the
+`owc:offering` node, as depicted bellow.
+
+```
+<entry>
+    <title>OpenSearch Collections</title>
+    <id>http://www.opengis.net/tb13/eoc/OS_Collections</id>
+    <updated>2017-09-04T15:23:09Z</updated>
+    <content type="html">EOC OpenSearch Collections</content>
+    <!-- OpenSearch offering for Spacebel -->
+    <owc:offering code="http://www.opengis.net/spec/owc-atom/1.0/opensearch">
+        <owc:content type="application/opensearchdescription+xml" href="https://finder.eocloud.eu/resto/api/collections/Sentinel1/describe.xml"/>
+      <mapping>
+      <query>
+                   <map key="AreaOfInterest" value="geometry" />
+                   <map key="StartTimeOfInterest" value="startDate"/>
+                   <map key="StopTimeOfInterest" value="completionDate"/>
+      </query>
+      <inputs>
+          <map key="image" value="features[*].properties.productIdentifier" />
+      </inputs>
+  </mapping>
+    </owc:offering>
+</entry>
+```
+
+The `mapping` node was aiming two different purposes:
+
+ - Mapping attributed to OpenSearch queries (the `query` node);
+ - Mapping WPS processing inputs to jobs handled by the underlying execution
+ system, and merged together from the OpenSearch query using an
+ http://goessner.net/articles/JsonPath/[jsonpath expression];
 
 ==== Other Impressions & Recommendations
 // whatever other impressions, recommendations etc. you have, please put them here
-
-
-//FROM HERE ON, INSTRUCTIONS ONLY FOLLOW. PLEASE DELETE THIS PART
-==== INSTRUCTIONS
-
-[NOTE]
-.Instructions
-===============================================
-This section explains some concepts frequently required by Asciidoc novices. Please use this file as a template for your own clauses.
-===============================================
-
-===== Figures
-If you want to reference a figure by using a figure number, it is important to use the following syntax. The figure identifier for <<img_mindMap>> is the first statement of the header. Please adapt the width as appropriate.
-
-[#img_mindMap,reftext='{figure-caption} {counter:figure-num}']
-.High-Level Mind Map of Testbed-14
-image::images/t14MindMap.png[width=800,align="center"]
-
-It is important that you use the same syntax for all images, otherwise the automatic numbering is corrupted!
-
-===== Tables
-Tables are easy to deal with as long as you keep them simple! To add a table, please use the following syntax.
-
-[#table_countries,reftext='{table-caption} {counter:table-num}']
-.Countries in Europe
-[cols="50e,^25m,>25s",width="75%",options="header",align="center"]
-|===
-|Country | Population | Size
-
-| Monaco
-| 36371
-| 1.98
-
-| Gibraltar
-| 29431
-| 6.8
-|===
-
-The first line is used for referencing. You can reference <<table_countries>> in your text. The only thing you should change in that line is the table id, which is "table_countries" in this case. Please do not remove the "#", please do not change anything else in that line.
-
-You can define the style and width of each column. In our example, the first column takes 50% of the entire width, the second and third column take 25% each. The total width of the table is 75% of the text width.
-
-The letters after the width percentage indicate if the column is e=emphasis, m=monospaced, a=asciidoc, s=strong. The d=default does not need to be set.
-
-Cell alignment: If you need to align a column, you may indicate this by setting ^,<, or >. Examples:
-
-* ^25m = centered, 25% width, monospaced.
-* >25e = aligned right, 25% width, emphasised
-* <25 = aligned left, 25% width, asciidoc
-
-In any case, please make sure that your table fit on a piece of A4 or letter-size paper!!
-
-===== Recommended Asciidoc Environment
-We recommend to use http://asciidoctor.org[asciidoctor] and http://asciidoctor.org/docs/convert-asciidoc-to-pdf/[asciidoctor-pdf] in combination with the https://atom.io[Atom] editor.
-
-In Atom, you should install the following packages:
-
-* asciidoc-preview
-* autocomplete-asciidoc
-* language-asciidoc
-* markdown-writer: requires changing of key-map to allow for keyboard shortcuts such as e.g. *bold*
-* platformio-IDE-terminal
-
-This environment allows you to use keyboard shortcuts, autocomplete, syntax highlighting and a rendered preview for asciidoc; and provides you an terminal window within the editor to convert your asciidoc to html and pdf.
-
-===== Asciidoc Conversion
-In order to achieve a uniform look-and-feel of all ERs in both HTML and PDF, we have provided a css and theme file. The following commands can be used to convert the ER:
-
-*Command for PDF output:*
- asciidoctor-pdf -a pdf-stylesdir=resources -a pdf-style=ogc -a pdf-fontsdir=resources/fonts -o 18-xxx.pdf  er.adoc
-
-*Command for HTML output:*
- asciidoctor -a data-uri -a stylesheet=ogc.css -a stylesdir=./resources/stylesheets -o 18-xxx er.adoc
-
-===== Source Code
-
-You can add code snippets using the following syntax:
-
-.Code Example XML
-[source,xml]
-----
-<section>
-  <title>Section Title</title> <!--1-->
-</section>
-----
-<1> This notation allows to reference particular sections within the code.
-
-
-.Code Example JSON
-[source,json]
-----
-{"menu": {
-  "id": "file",
-  "value": "File",
-  "popup": {
-    "menuitem": [
-      {"value": "New", "onclick": "CreateNewDoc()"},
-      {"value": "Open", "onclick": "OpenDoc()"},
-      {"value": "Close", "onclick": "CloseDoc()"}
-    ]
-  }
-}}
-----
-
-===== Asciidoc(tor) Syntax Help
-Is available e.g. here: http://asciidoctor.org/docs/
-
-===== Citations
-Please use the following syntax to insert citations:
-
-cite:[VanZyl2009]
-
-Then you need to provide all citation information in the file resources/bibtex-file.bib. Everything else is done automatically.
-
-For further information, please consult https://github.com/asciidoctor/asciidoctor-bibtex.
