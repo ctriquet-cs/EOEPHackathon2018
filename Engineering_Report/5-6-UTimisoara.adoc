@@ -59,7 +59,6 @@ From a high level perspective the our solution was composed out of:
  providing compute resources
 
 ==== Proposed Alternatives
-// if you have any recommendations on other solutions, please describe them here
 
 ==== Experiences with AP & ADES
 [[ap-and-ades]]
@@ -74,24 +73,24 @@ The application package assumed the introduction of an `mapping` section inside 
 
 ```
 <entry>
-    <title>OpenSearch Collections</title>
-    <id>http://www.opengis.net/tb13/eoc/OS_Collections</id>
-    <updated>2017-09-04T15:23:09Z</updated>
-    <content type="html">EOC OpenSearch Collections</content>
-    <!-- OpenSearch offering for Spacebel -->
-    <owc:offering code="http://www.opengis.net/spec/owc-atom/1.0/opensearch">
-        <owc:content type="application/opensearchdescription+xml" href="https://finder.eocloud.eu/resto/api/collections/Sentinel1/describe.xml"/>
-      <mapping>
+  <title>OpenSearch Collections</title>
+  <id>http://www.opengis.net/tb13/eoc/OS_Collections</id>
+  <updated>2017-09-04T15:23:09Z</updated>
+  <content type="html">EOC OpenSearch Collections</content>
+  <!-- OpenSearch offering for Spacebel -->
+  <owc:offering code="http://www.opengis.net/spec/owc-atom/1.0/opensearch">
+    <owc:content type="application/opensearchdescription+xml" href="https://finder.eocloud.eu/resto/api/collections/Sentinel1/describe.xml"/>
+    <mapping>
       <query>
-                   <map key="AreaOfInterest" value="geometry" />
-                   <map key="StartTimeOfInterest" value="startDate"/>
-                   <map key="StopTimeOfInterest" value="completionDate"/>
+        <map key="AreaOfInterest" value="geometry"/>
+        <map key="StartTimeOfInterest" value="startDate"/>
+        <map key="StopTimeOfInterest" value="completionDate"/>
       </query>
       <inputs>
-          <map key="image" value="features[*].properties.productIdentifier" />
+        <map key="image" value="features[*].properties.productIdentifier"/>
       </inputs>
-  </mapping>
-    </owc:offering>
+    </mapping>
+  </owc:offering>
 </entry>
 ```
 
@@ -103,4 +102,10 @@ The `mapping` node was aiming two different purposes:
  http://goessner.net/articles/JsonPath/[jsonpath expression];
 
 ==== Other Impressions & Recommendations
-// whatever other impressions, recommendations etc. you have, please put them here
+
+The Hackathon was of great value for UVT/IeAT as we have not been involved in
+the Testbed activities. It allowed us to test interoperation with different
+clients (Solenix) and ADES implementation (Solenix).
+
+Our main recommendation would be that the next hackathon activities should have
+a dedicated session for demission making and agreeing upon common rules;
