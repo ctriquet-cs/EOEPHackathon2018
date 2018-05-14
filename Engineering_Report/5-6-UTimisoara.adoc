@@ -59,6 +59,7 @@ From a high level perspective the our solution was composed out of:
  providing compute resources
 
 ==== Proposed Alternatives
+// if you have any recommendations on other solutions, please describe them here
 
 ==== Experiences with AP & ADES
 [[ap-and-ades]]
@@ -108,4 +109,6 @@ the Testbed activities. It allowed us to test interoperation with different
 clients (Solenix) and ADES implementation (Solenix).
 
 Our main recommendation would be that the next hackathon activities should have
-a dedicated session for demission making and agreeing upon common rules;
+a dedicated session for decision making and agreeing upon common rules.
+
+Also complete (end-to-end) practical demonstrations would be great.
