@@ -9,14 +9,16 @@
 ==== Motivation to Participate
 // please describe briefly why you participated
 
+We are striving after development of interoperable research independent of cloud processing facilities to foster exchange and repeatability.
+The proposed exercise was perfectly in line with what we currently try to achieve in the in the *H2020 openEO project* ( http://openeo.eu ). So participating in this hackathon gave as the possibility to implement and test web processing services based on processing chains organized in containers and link it to the RESTful services that we are currently defining and developing in the *openEO* project.
 
 ==== Implemented Solution
 // please describe your implemented solution here. Provide as much detail as you think reasonable.
 
 
 
-The solution implemented by EURAC consists of an ADES server that exposes a set of operations as describend in the OGC Testbeds, in form of a set of WPS 1.0.0 compliant offerings.
-Further an interface with the openEO api has been started to be implemented to access those web process services in a RESTful way and render it interoperable with the client API's in python and R that are currently in development in the H2020 openEO project ( http://openeo.eu ).
+The solution implemented by *Eurac Research* consists of an ADES server that exposes a set of operations as describend in the *OGC Testbeds*, in form of a set of *WPS 1.0.0* compliant offerings.
+Further an interface with the *openEO API* has been started to be implemented to access those web process services in a RESTful way and render it interoperable with the client API's in *python* and *R* that are currently in development.
 
 The reasons to use WPS 1.0.0 for the implementation are:
 
