@@ -61,10 +61,9 @@ The GetCapabilites result for the service implemented:
 ```
 
 
-The proposed implementation uses a OWS Condext Document (OWC) to describe and deploy an application. 
+The proposed implementation uses a OWS Condext Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information.
 
 The OWC document is passed as parameter to the WPS DeployProcess operation
-
 
 
 
@@ -160,22 +159,28 @@ The parameters for the operation are the following:
 
 The ProcessParameters are organized in the following sections:
 
-- cloud: Cloud specific parameters (ex. Amount requested resources, Maximum amount to be spent, Timeout policy for killing a process, etc.)
-- container: Parameters which are specific to the environment used (eg. docker, kubernetes, Apache Hadoop, etc..)
-- application: Parameters specific to the application deployed inside a container (eg. Application entry point)
-- data: Data reference passed to the application.
+- **cloud:** Cloud specific parameters (ex. Amount requested resources, Maximum amount to be spent, Timeout policy for killing a process, etc.)
+- **container:** Parameters which are specific to the environment used (eg. docker, kubernetes, Apache Hadoop, etc..)
+- **application:** Parameters specific to the application deployed inside a container (eg. Application entry point)
+- **data:** Data reference passed to the application.
 
-Here is a sample for the ProcessParameters Input with the corresponding request. The variable $ApplicationRunStore, which consists of the dedicated working directory of a process, and the variable $Files are replaced at runtime by the ADES application:
-
+Here is a sample for the ProcessParameters Input with the corresponding request. 
 **ProcessParameters:**
 ```json
 {
 	"cloud":"NA",
-	"container":"-t --rm -v $ApplicationRunStore:/home/adesuser/data/ -e INPUT_IMAGE=$Files",
+	"container":"-t --rm -v $ApplicationRunStore:/home/adesuser/data/ -e INPUT_IMAGE=$Data",
 	"application":"/home/adesuser/processing_scripts/run.sh",
 	"data":"S2B_MSIL1C_20180417T102019_N0206_R065_T32TPP_20180417T140522.zip"
 }
 ```
+Both variables $ApplicationRunStore and $Data are replaced at runtime by the ADES application.
+
+The variable **$ApplicationRunStore** is a path placeholder and consists of the dedicated working directory assigned automatically by the ADES to a given process instance. 
+
+The variable **$Data** is a placeholder for the data referenced by the user, or by a search offering operation.
+
+
 
 
 
