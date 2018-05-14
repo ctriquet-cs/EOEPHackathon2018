@@ -177,7 +177,7 @@ The ProcessParameters are organized in the following sections:
 - **cloud:** Cloud specific parameters (ex. Amount of requested resources, Maximum amount to be spent, Timeout policy for killing a process, etc.)
 - **container:** Parameters which are specific to the environment used (eg. docker, kubernetes, Apache Hadoop, etc..)
 - **application:** Parameters specific to the application deployed inside a container (eg. Application entry point, etc.)
-- **data:** Data reference passed to the application. If null the data referece is defined in the OWC document (http://www.opengis.net/spec/owc-atom/1.0/opensearch).
+- **data:** Data reference passed to the application. If null the data referece is defined in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch).
 
 Here is a sample for the ProcessParameters: 
 **ProcessParameters:**
