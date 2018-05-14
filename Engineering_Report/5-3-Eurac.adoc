@@ -17,7 +17,7 @@
 
 The solution implemented by EURAC consists of an ADES server that exposes a set of operations as describend in the OGC Testbeds, in form of a set of WPS 1.0.0 compliant offerings.
 
-The reasons to use WPS 1.0.0 for the implementation were :
+The reasons to use WPS 1.0.0 for the implementation are:
 
 - To ensure compatibility with the tools currently employed (i.e GeoServer)
 - To ensure compatibility with a larger set of available libraries and tools available
@@ -35,7 +35,8 @@ The operations actually implemented as a proof of concept and working prototype 
 
 
 The GetCapabilites result for the service implemented:
-```xml
+[source,xml]
+----
 	<wps:ProcessOfferings>
 		<wps:Process wps:processVersion="1.0.0">
 			<ows:Identifier>gs:DeployProcessEO</ows:Identifier>
@@ -63,18 +64,18 @@ The GetCapabilites result for the service implemented:
 			<ows:Abstract>UndeployProcess Operation EURAC Research EO</ows:Abstract>
 		</wps:Process>
 	</wps:ProcessOfferings>
-```
+----
 
 
 The implementation uses the proposed OWS Condext Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information and approach to validate the capabilities on a given cluster.
 
 The OWC document is passed as parameter to the WPS DeployProcess operation
 
-The ADES will perform the following tasks:
+The ADES, appart exposing the services, will also perform the following tasks:
 
 - Store all application related information found in the OWS context Document in a persistent DB
 - Evaluate and execute the offerings defined in the OWC document, in particular owc offerings related to pulling a given container for the repository, executing a given OpenSearc Query on a catalogue (optional), and executing the defined wpsProcessOffering
-- Upon the ExecuteOperation, the ADES will also perform the "staging" operations on the data referenced (i.e. Download the data in a local workskpace $ApplicationRunStore ). The staging is done based on the policies defined in the ProcessParameters (sections -> cloud:.., data:...) and considers, if any, the results of the search offering defined in the OWC document, or the 'data:' defined in the ProcessParameters  --> this allows actually the application developer to have a defined dataset and the user exventually to execute a paricular or different dataset, of course only if this is validated also by the OWC document (i.e. </georss:where>, <dc:date>)
+- Upon the ExecuteOperation, the ADES will also perform the "staging" operations on the data referenced (i.e. Download the data in a local workskpace $ApplicationRunStore ). The staging is done based on the policies defined in the ProcessParameters (sections -> cloud:.., data:...) and considers, if any, the results of the search offering defined in the OWC document, or the 'data:' defined in the ProcessParameters  --> this allows actually the application developer to have a defined dataset, and also allows the user exventually to execute a paricular or different dataset, of course only if this is validated also by the OWC document (i.e. </georss:where>, <dc:date>)
 
 
 
@@ -90,7 +91,8 @@ The DeployProcess operation allows to deploy a process defined as an Application
 
 
 DescribeProcess result:
-```xml
+[source,xml]
+----
 <?xml version="1.0" encoding="UTF-8"?>
 <wps:ProcessDescriptions xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:wps="http://www.opengis.net/wps/1.0.0"
@@ -155,7 +157,7 @@ DescribeProcess result:
 		</ProcessOutputs>
 	</ProcessDescription>
 </wps:ProcessDescriptions>
-```
+----
 
 If the deployment is sucessful, the response includes a valid ProcessIdentifier UUID usable for the ExecuteProcess and UndeployProcess operations
 
@@ -170,25 +172,26 @@ The parameters for the operation are the following:
 
 - **ProcessInstanceIdentifier:** Identifier of the process instance to be executed (UUID)
 - **ProcessParameters:** Parameters for the Process in JSON format
-- **Options:** Control Options (mode=sync|async, ec..)
+- **Options:** Control Options (mode=sync|async, etc..)
 
 The ProcessParameters are organized in the following sections:
 
-- **cloud:** Cloud specific parameters (ex. Amount of requested resources, Maximum amount to be spent, Timeout policy for killing a process, etc.)
-- **container:** Parameters which are specific to the environment used (eg. docker, kubernetes, Apache Hadoop, etc..)
-- **application:** Parameters specific to the application deployed inside a container (eg. Application entry point, etc.)
-- **data:** Data reference passed to the application. If null the data referece is defined in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch).
+- **cloud:** Cloud specific parameters (ex. Amount of requested resources, Maximum amount to be spent, Timeout policy for killing a process, Scheduler used, etc.)
+- **container:** Parameters which are specific to the environment and job scheduler used (eg. docker, kubernetes, Apache Hadoop, etc..)
+- **application:** Parameters specific to the application deployed inside a container, which in the simplest general case is the path to the Application entry point (script)
+- **data:** Data reference passed to the application. If null, the data referece is adopted by the results of the search offering in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch).
 
 Here is a sample for the ProcessParameters: 
 **ProcessParameters:**
-```json
+[source,json]
+----
 {
-	"cloud":"ncpu=4,exec_policy=parallel",
+	"cloud":"ncpu=4, environment=docker, exec_policy=parallel",
 	"container":"-t --rm -v $ApplicationRunStore:/home/adesuser/data/ -e INPUT_IMAGE=$Data",
 	"application":"/home/adesuser/processing_scripts/run.sh",
 	"data":"S2B_MSIL1C_20180417T102019_N0206_R065_T32TPP_20180417T140522.zip"
 }
-```
+----
 Both variables $ApplicationRunStore and $Data are possible placeholders and are replaced at runtime by the ADES application.
 
 The variable **$ApplicationRunStore** is a path placeholder and consists in this case of the dedicated working directory assigned automatically by the ADES to a given process instance.
@@ -197,7 +200,7 @@ The variable **$Data** is a placeholder for the data referenced by the user, or 
 
 If the request is validated and executed sucessfully the response includes an indentifier of the job executed (JobID)
 
-In the case where a process is executed in parallel no a larger set of files, the response includes a list of JobIDs. This is convenient so that a GetStatus($JobID) operation can be executed on each single child process.
+In the case where a process is executed in parallel on a larger set of files, the response includes a list of JobIDs. This is convenient so that a GetStatus($JobID) operation can be executed on each single child process.
 
 
 
