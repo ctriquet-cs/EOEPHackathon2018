@@ -5,8 +5,8 @@
 
 // Please provide the name of all people you would like to have included in the list of contributing authors on top, following the pattern below:
 //Ingo Simonis | OGC
-Armin Costa | Eurac Ressearch
-Alexander Jacob | Eurac Research
+ - Armin Costa | Eurac Research
+ - Alexander Jacob | Eurac Research
 
 ==== Motivation to Participate
 // please describe briefly why you participated
