@@ -9,8 +9,192 @@
 ==== Motivation to Participate
 // please describe briefly why you participated
 
+
 ==== Implemented Solution
 // please describe your implemented solution here. Provide as much detail as you think reasonable.
+
+The solution implemented consists of an ADES server that exposes a set of operations as describend in the OGC Testbeds, in form of a set of WPS 1.0.0 compliant offerings.
+
+The reasons to use WPS 1.0.0 for our implementation were :
+
+- To ensure compatibility with the tools we're currently using (i.e GeoServer)
+- To ensure compatibility with a larger set of available libraries and tools available
+- Have a general model that can be easily trasfered also to WPS 2.0.0 in near future
+
+The operations actually implemented as a proof of concept and working prototype are the following:
+
+- DeployProcess
+- ExecuteProcess
+- UndeployProcess
+- GetStatus (not yet fully implemented)
+- Get Result (not yet fully implemented)
+
+
+The GetCapabilites result for the service implemented:
+```xml
+	<wps:ProcessOfferings>
+		<wps:Process wps:processVersion="1.0.0">
+			<ows:Identifier>gs:DeployProcessEO</ows:Identifier>
+			<ows:Title>DeployProcess</ows:Title>
+			<ows:Abstract>DeployProcess Operation EURAC Research EO</ows:Abstract>
+		</wps:Process>
+		<wps:Process wps:processVersion="1.0.0">
+			<ows:Identifier>gs:ExecuteProcessEO</ows:Identifier>
+			<ows:Title>ExecuteProcess</ows:Title>
+			<ows:Abstract>ExecuteProcess Operation EURAC Research EO</ows:Abstract>
+		</wps:Process>
+		<wps:Process wps:processVersion="1.0.0">
+			<ows:Identifier>gs:GetResultEO</ows:Identifier>
+			<ows:Title>GetResult</ows:Title>
+			<ows:Abstract>GetResult Operation of Process EURAC Research EO</ows:Abstract>
+		</wps:Process>
+		<wps:Process wps:processVersion="1.0.0">
+			<ows:Identifier>gs:GetStatusEO</ows:Identifier>
+			<ows:Title>StatusInfo</ows:Title>
+			<ows:Abstract>StatusInfo Operation of Process EURAC Research EO</ows:Abstract>
+		</wps:Process>
+		<wps:Process wps:processVersion="1.0.0">
+			<ows:Identifier>gs:UndeployProcessEO</ows:Identifier>
+			<ows:Title>UndeployProcess</ows:Title>
+			<ows:Abstract>UndeployProcess Operation EURAC Research EO</ows:Abstract>
+		</wps:Process>
+	</wps:ProcessOfferings>
+```
+
+
+The implementation uses the proposed OWS Condext Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information.
+
+The OWC document is passed as parameter to the WPS DeployProcess operation
+
+The ADES will perform the following tasks:
+
+- Store all application related information found in the OWS context Document in a persistent DB
+- Evaluate and execute the offerings defined in the OWC document, in particular owc offerings related to pulling a given container for the repository, executing a given OpenSearch Query on a catalogue, and executing the wpsProcessOffering.
+- Upon the ExecuteOperation, the ADES will also perform staging operations on the data referenced (i.e. Download the data in a local workskpace $ApplicationRunStore )
+
+
+
+
+
+### DeployProcess
+
+
+The DeployProcess operation allows to deploy a process defined as an Application OWS Context document (OWC) and has the following Parameters:
+
+- **OWC** : ATOM-encoded OWS Context Document describing the application package
+- **Options**: Control Options (...)
+
+
+DescribeProcess result:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:ProcessDescriptions xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:wps="http://www.opengis.net/wps/1.0.0"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xml:lang="en" service="WPS" version="1.0.0"
+	xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">
+	<ProcessDescription wps:processVersion="1.0.0"
+		statusSupported="true" storeSupported="true">
+		<ows:Identifier>gs:DeployProcessEO</ows:Identifier>
+		<ows:Title>DeployProcess</ows:Title>
+		<ows:Abstract>DeployProcess Operation EURAC Research EO</ows:Abstract>
+		<DataInputs>
+			<Input maxOccurs="1" minOccurs="1">
+				<ows:Identifier>OWC</ows:Identifier>
+				<ows:Title>OWC</ows:Title>
+				<ows:Abstract>An ATOM-encoded OWS Context Document describing the application package</ows:Abstract>
+				<ComplexData maximumMegabytes="4">
+					<Default>
+						<Format>
+							<MimeType>application/atom+xml</MimeType>
+						</Format>
+					</Default>
+					<Supported>
+						<Format>
+							<MimeType>application/atom+xml</MimeType>
+						</Format>
+						<Format>
+							<MimeType>application/xml</MimeType>
+						</Format>
+						<Format>
+							<MimeType>text/xml</MimeType>
+						</Format>
+					</Supported>
+				</ComplexData>
+			</Input>
+			<Input maxOccurs="1" minOccurs="1">
+				<ows:Identifier>Options</ows:Identifier>
+				<ows:Title>Options</ows:Title>
+				<ows:Abstract>Control Options</ows:Abstract>
+				<LiteralData>
+					<ows:AnyValue />
+				</LiteralData>
+			</Input>
+		</DataInputs>
+		<ProcessOutputs>
+			<Output>
+				<ows:Identifier>DeployResponse</ows:Identifier>
+				<ows:Title>DeployResponse</ows:Title>
+				<ComplexOutput>
+					<Default>
+						<Format>
+							<MimeType>text/xml</MimeType>
+						</Format>
+					</Default>
+					<Supported>
+						<Format>
+							<MimeType>text/xml</MimeType>
+						</Format>
+					</Supported>
+				</ComplexOutput>
+			</Output>
+		</ProcessOutputs>
+	</ProcessDescription>
+</wps:ProcessDescriptions>
+```
+
+If the deployment is sucessful, the response includes a valid ProcessIdentifier UUID usable for the ExecuteProcess and UndeployProcess operations
+
+
+### ExecuteProcess
+
+
+Once an application has been deployed and a valid UUID ProcessIdentifier is available, the ExecuteProcess operation allows to execute the applicaction by means of additional, process specific parameters defined in a JSON format.
+
+
+The parameters for the operation are the following:
+
+- **ProcessInstanceIdentifier:** Identifier of the process instance to be executed (UUID)
+- **ProcessParameters:** Parameters for the Process in JSON format
+- **Options:** Control Options (mode=sync|async, ec..)
+
+The ProcessParameters are organized in the following sections:
+
+- **cloud:** Cloud specific parameters (ex. Amount of requested resources, Maximum amount to be spent, Timeout policy for killing a process, etc.)
+- **container:** Parameters which are specific to the environment used (eg. docker, kubernetes, Apache Hadoop, etc..)
+- **application:** Parameters specific to the application deployed inside a container (eg. Application entry point, etc.)
+- **data:** Data reference passed to the application. If null the data referece is defined in the OWC document (http://www.opengis.net/spec/owc-atom/1.0/opensearch).
+
+Here is a sample for the ProcessParameters: 
+**ProcessParameters:**
+```json
+{
+	"cloud":"NA",
+	"container":"-t --rm -v $ApplicationRunStore:/home/adesuser/data/ -e INPUT_IMAGE=$Data",
+	"application":"/home/adesuser/processing_scripts/run.sh",
+	"data":"S2B_MSIL1C_20180417T102019_N0206_R065_T32TPP_20180417T140522.zip"
+}
+```
+Both variables $ApplicationRunStore and $Data are replaced at runtime by the ADES application.
+
+The variable **$ApplicationRunStore** is a path placeholder and consists of the dedicated working directory assigned automatically by the ADES to a given process instance. 
+
+The variable **$Data** is a placeholder for the data referenced by the user, or by a search offering operation defined in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch)
+
+If the request is validated and executed sucessfully the response includes an indentifier of the job executed (JobID)
+
+
+
 
 ==== Proposed Alternatives
 // if you have any recommendations on other solutions, please describe them here
