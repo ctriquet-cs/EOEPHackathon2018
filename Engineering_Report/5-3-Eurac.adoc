@@ -16,6 +16,7 @@
 The solution implemented consists of an ADES server that exposes a set of operations as describend in the OGC Testbeds, in form of a set of WPS 1.0.0 compliant offerings.
 
 The reasons to use WPS 1.0.0 were the following:
+
 - To ensure compatibility with a possibly large set of tools and libraries
 - 
 
