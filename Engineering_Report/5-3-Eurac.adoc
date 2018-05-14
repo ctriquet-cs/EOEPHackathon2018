@@ -62,7 +62,7 @@ The GetCapabilites result for the service implemented:
 ```
 
 
-The proposed implementation uses a OWS Condext Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information.
+The implementation uses the proposed OWS Condext Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information.
 
 The OWC document is passed as parameter to the WPS DeployProcess operation
 
@@ -153,6 +153,8 @@ DescribeProcess result:
 </wps:ProcessDescriptions>
 ```
 
+If the deployment is sucessful, the response includes a valid ProcessIdentifier UUID usable for the ExecuteProcess and UndeployProcess operations
+
 
 ### ExecuteProcess
 
@@ -189,6 +191,7 @@ The variable **$ApplicationRunStore** is a path placeholder and consists of the 
 
 The variable **$Data** is a placeholder for the data referenced by the user, or by a search offering operation defined in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch)
 
+If the request is validated and executed sucessfully the response includes an indentifier of the job executed (JobID)
 
 
 
