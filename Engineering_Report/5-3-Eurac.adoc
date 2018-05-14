@@ -159,9 +159,10 @@ The parameters for the operation are the following:
 - **Options:** Control Options (mode=sync|async, ec..)
 
 The ProcessParameters are organized in the following sections:
+
 - cloud: Cloud specific parameters (ex. Amount requested resources, Maximum amount to be spent, Timeout policy for killing a process, etc.)
 - container: Parameters which are specific to the environment used (eg. docker, kubernetes, Apache Hadoop, etc..)
-- process: Parameters specific to the application deployed inside a container (eg. Application entry point)
+- application: Parameters specific to the application deployed inside a container (eg. Application entry point)
 - data: Data reference passed to the application.
 
 Here is a sample for the ProcessParameters Input with the corresponding request. The variable $ApplicationRunStore, which consists of the dedicated working directory of a process, and the variable $Files are replaced at runtime by the ADES application:
@@ -171,7 +172,7 @@ Here is a sample for the ProcessParameters Input with the corresponding request.
 {
 	"cloud":"NA",
 	"container":"-t --rm -v $ApplicationRunStore:/home/adesuser/data/ -e INPUT_IMAGE=$Files",
-	"process":"/home/adesuser/processing_scripts/run.sh",
+	"application":"/home/adesuser/processing_scripts/run.sh",
 	"data":"S2B_MSIL1C_20180417T102019_N0206_R065_T32TPP_20180417T140522.zip"
 }
 ```
