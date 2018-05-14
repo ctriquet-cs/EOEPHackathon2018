@@ -74,13 +74,15 @@ The ADES will perform the following tasks:
 
 
 
+
+
 ### DeployProcess
 
 
 The DeployProcess operation allows to deploy a process defined as an Application OWS Context document (OWC) and has the following Parameters:
 
 - **OWC** : ATOM-encoded OWS Context Document describing the application package
-- **Options**: Control Options (mode=sync|async, ...)
+- **Options**: Control Options (...)
 
 
 DescribeProcess result:
@@ -161,17 +163,17 @@ Once an application has been deployed and a valid UUID ProcessIdentifier is avai
 The parameters for the operation are the following:
 
 - **ProcessInstanceIdentifier:** Identifier of the process instance to be executed (UUID)
-- **ProcessParameters:** Parameters for the Process (application specific), in JSON format
+- **ProcessParameters:** Parameters for the Process in JSON format
 - **Options:** Control Options (mode=sync|async, ec..)
 
 The ProcessParameters are organized in the following sections:
 
-- **cloud:** Cloud specific parameters (ex. Amount requested resources, Maximum amount to be spent, Timeout policy for killing a process, etc.)
+- **cloud:** Cloud specific parameters (ex. Amount of requested resources, Maximum amount to be spent, Timeout policy for killing a process, etc.)
 - **container:** Parameters which are specific to the environment used (eg. docker, kubernetes, Apache Hadoop, etc..)
-- **application:** Parameters specific to the application deployed inside a container (eg. Application entry point)
-- **data:** Data reference passed to the application.
+- **application:** Parameters specific to the application deployed inside a container (eg. Application entry point, etc.)
+- **data:** Data reference passed to the application. If null the data referece is defined in the OWC document (http://www.opengis.net/spec/owc-atom/1.0/opensearch).
 
-Here is a sample for the ProcessParameters Input with the corresponding request. 
+Here is a sample for the ProcessParameters: 
 **ProcessParameters:**
 ```json
 {
@@ -185,7 +187,7 @@ Both variables $ApplicationRunStore and $Data are replaced at runtime by the ADE
 
 The variable **$ApplicationRunStore** is a path placeholder and consists of the dedicated working directory assigned automatically by the ADES to a given process instance. 
 
-The variable **$Data** is a placeholder for the data referenced by the user, or by a search offering operation.
+The variable **$Data** is a placeholder for the data referenced by the user, or by a search offering operation defined in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch)
 
 
 
