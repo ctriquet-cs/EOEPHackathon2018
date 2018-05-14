@@ -22,6 +22,7 @@ The reasons to use WPS 1.0.0 for our implementation were :
 - Have a general model that can be easily trasfered also to WPS 2.0.0 in near future
 
 The operations actually implemented as a proof of concept and working prototype are the following:
+
 - DeployProcess
 - ExecuteProcess
 - UndeployProcess
@@ -64,6 +65,12 @@ The GetCapabilites result for the service implemented:
 The proposed implementation uses a OWS Condext Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information.
 
 The OWC document is passed as parameter to the WPS DeployProcess operation
+
+The ADES will perform the following tasks:
+
+- Store all application related information found in the OWS context Document in a persistent DB
+- Evaluate and execute the offerings defined in the OWC document, in particular owc offerings related to pulling a given container for the repository, executing a given OpenSearch Query on a catalogue, and executing the wpsProcessOffering.
+- Upon the ExecuteOperation, the ADES will also perform staging operations on the data referenced (i.e. Download the data in a local workskpace $ApplicationRunStore )
 
 
 
