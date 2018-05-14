@@ -9,8 +9,24 @@
 ==== Motivation to Participate
 // please describe briefly why you participated
 
+
 ==== Implemented Solution
 // please describe your implemented solution here. Provide as much detail as you think reasonable.
+
+The solution implemented consists of an ADES server that exposes a set of operations as describend in the OGC Testbeds, in form of a set of WPS 1.0.0 compliant offerings.
+
+The reasons to use WPS 1.0.0 were the following:
+- To ensure compatibility with a possibly large set of tools and libraries
+- 
+
+The operations actually implemented as a proof of concept are the following:
+- DeployProcess
+- ExecuteProcess
+- UndeployProcess
+- GetStatus (not yet fully implemented)
+- Get Result (not yet fully implemented)
+
+
 
 ==== Proposed Alternatives
 // if you have any recommendations on other solutions, please describe them here
