@@ -4,13 +4,22 @@
 // Please provide content under the headlines given below. Please delete the instructions. At the bottom, you find some instructions on ASCIIDOC.
 
 // Please provide the name of all people you would like to have included in the list of contributing authors on top, following the pattern below:
-//Ingo Simonis | OGC
+//Benjamin Pross | 52°North
 
 ==== Motivation to Participate
-// please describe briefly why you participated
+
+52°North is involved in several projects dealing with processing of large amounts of Earth Observation data. For example, the research project WaCoDis aims to inplement a geoinformation infrastructure for river basin management monitoring tasks including water quality control, water protection and protection of access to clean water. For this purpose remote sensing data from the Copernicus program, waether data and in-situ sensor data will be combined, merged and analyzed. Another example is the RIESGOS research project, which aims to implement multi-risk assessment from natural hazards by utilizing standardized service interfaces.
+
+Furthermore, 52°North has been active in standardizing geoprocessing. Benjamin Pross is currently leading the Web Processing Service 2.0 SWG at OGC. The 52°North WPS implementation fully supports WPS 1.0.0 and 2.0 and is widely used. It has also been used in Testbed-13 Earth Observation Clouds thread.
+
+Since 52°North provides a WPS implementation and is involed in different project dealing Earth Observation data already, the EOEP Hackathon was a good opportunity for us to exercise and increase our knowledge.
 
 ==== Implemented Solution
-We have implemented an Application Deployment and Execution Service based on the 52°North javaPS framework The framework supports the WPS 2.0 interface. The means to deploy and undeploy processes were implemented as WPS processs themself. The process descriptions were aligned to the one specified in OGC 17-024. 
+52°North has implemented an Application Deployment and Execution Service based on the 52°North javaPS framework The framework fully supports the WPS 2.0 interface. The means to deploy and undeploy processes were implemented as WPS processs themself. The process descriptions were aligned to the one specified in the OGC Testbed-13: Application Deployment and Execution Service Engineering Report (OGC 17-024). 
+
+[#img_52nADES,reftext='{figure-caption} {counter:figure-num}']
+.52°North WPS with ADES-specific extension
+image::images/52n-ADES.png[width=800,align="center"]
 
 .DeployProcess description
 [source,xml]
@@ -313,7 +322,7 @@ The process itself is a mockup, but sending an example execute request is possib
 ----
 
 ==== Experiences with AP & ADES
-WPS 2.0 processes seem a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. 
+The concept of the ADES works well with WPS and the 52°North WPS could be easily extended with the nacessary functionality. WPS 2.0 processes are a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. The 52°North ADES was used for testing by several client developers during the Hackathon. It supports the deployment and execution of new processes based on Application Packages. The backend implementation, i.e. deploying the docker-container specified in the Application Package was not trivial and we had to create a mock-up if this functionality. In Testbed-14 different approaches for enabling WPS with transactional functionality are explored. The Testbed-14 WPS-T ER will specify, how transactional behaviour can be implemented for WPS using additional dedicated operations for deploying and undeploying processes. 
 
 ==== Acknowledgement
 
