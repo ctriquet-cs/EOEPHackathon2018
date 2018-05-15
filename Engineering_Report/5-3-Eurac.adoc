@@ -5,8 +5,8 @@
 
 // Please provide the name of all people you would like to have included in the list of contributing authors on top, following the pattern below:
 //Ingo Simonis | OGC
- - Armin Costa | Eurac Research
- - Alexander Jacob | Eurac Research
+ - Armin Costa | Eurac Research | armin.costa@eurac.edu
+ - Alexander Jacob | Eurac Research | alexander.jacob@eurac.edu
 
 ==== Motivation to Participate
 // please describe briefly why you participated
@@ -19,7 +19,7 @@ The proposed exercise was perfectly in line with what we currently try to achiev
 
 
 
-The solution implemented by *Eurac Research* consists of an ADES server that exposes a set of operations as describend in the *OGC Testbeds*, in form of a set of *WPS 1.0.0* compliant offerings.
+The solution implemented by *Eurac Research* consists of an ADES server that exposes a set of operations as describend in the *OGC Testbeds*, in form of a set of *WPS 1.0.0* compliant operation offerings.
 Further an interface with the *openEO API* has been started to be implemented to access those web process services in a RESTful way and render it interoperable with the client API's in *python* and *R* that are currently in development.
 
 The reasons to use WPS 1.0.0 for the implementation are:
@@ -74,15 +74,15 @@ The GetCapabilites result for the service implemented:
 ----
 
 
-The implementation uses the proposed OWS Condext Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information and approach to validate the capabilities on a given cluster.
+The implementation uses the proposed OWS Context Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information and approach to validate the capabilities on a given cluster.
 
 The OWC document is passed as parameter to the WPS DeployProcess operation
 
 The ADES, appart exposing the services, will also perform the following tasks:
 
-- Store all application related information found in the OWS context Document in a persistent DB
-- Evaluate and execute the offerings defined in the OWC document, in particular owc offerings related to pulling a given container for the repository, executing a given OpenSearc Query on a catalogue (optional), and executing the defined wpsProcessOffering
-- Upon the ExecuteOperation, the ADES will also perform the "staging" operations on the data referenced (i.e. Download the data in a local workskpace $ApplicationRunStore ). The staging is done based on the policies defined in the ProcessParameters (sections -> cloud:.., data:...) and considers, if any, the results of the search offering defined in the OWC document, or the 'data:' defined in the ProcessParameters  --> this allows actually the application developer to have a defined dataset, and also allows the user exventually to execute a paricular or different dataset, of course only if this is validated also by the OWC document (i.e. </georss:where>, <dc:date>)
+- Store all application related information found in the OWS context Document in a persistent database
+- Evaluate and execute the offerings defined in the OWC document, in particular owc offerings related to pulling a given container from the repository, executing a given OpenSearc Query on a catalogue (optional), and executing the defined wpsProcessOffering
+- Upon the ExecuteProcess operation, the ADES will also perform the "staging" operation on the data referenced, i.e Download the data in a local process defined workskpace ($ApplicationRunStore). The staging is done based on the policies defined in the ProcessParameters (sections -> cloud:.., data:...) and considers, if any defined, the results of the search offering defined in the OWC document. In addition, also the configuration defined in the 'data:" section of the ProcessParameters are evaulated and translated to data references --> this allows actually on one side the application developer to have a defined dataset, and also allows the user eventually to execute a paricular or different dataset, of course only if this is validated also by the OWC document (i.e. </georss:where>, <dc:date>)
 
 
 
@@ -93,8 +93,14 @@ The ADES, appart exposing the services, will also perform the following tasks:
 
 The DeployProcess operation allows to deploy a process defined as an Application OWS Context document (OWC) and has the following Parameters:
 
+**Request:**
+
 - **OWC** : ATOM-encoded OWS Context Document describing the application package
-- **Options**: Control Options (...)
+- **Options**: Control Options (clusterURI=...., etc..)
+
+**Response:**
+
+- **StatusInfo**: Status of the depployment operation. If successfull contains a <ows:Identifier..> tag with the Process UUID  
 
 
 DescribeProcess result:
@@ -166,7 +172,8 @@ DescribeProcess result:
 </wps:ProcessDescriptions>
 ----
 
-If the deployment is sucessful, the response includes a valid ProcessIdentifier UUID usable for the ExecuteProcess and UndeployProcess operations
+The ProcessIdentifier UUID returned, if valid, is usable for subsequent ExecuteProcess and UndeployProcess operations
+
 
 
 ### ExecuteProcess
@@ -181,10 +188,10 @@ The parameters for the operation are the following:
 - **ProcessParameters:** Parameters for the Process in JSON format
 - **Options:** Control Options (mode=sync|async, etc..)
 
-The ProcessParameters are organized in the following sections:
+The ProcessParameters are organized in the following sections and contain a defined set of switches and configurations applicable to a process:
 
 - **cloud:** Cloud specific parameters (ex. Amount of requested resources, Maximum amount to be spent, Timeout policy for killing a process, Scheduler used, etc.)
-- **container:** Parameters which are specific to the environment and job scheduler used (eg. docker, kubernetes, Apache Hadoop, etc..)
+- **container:** Parameters which are specific to the environment and job scheduler used (eg. docker, kubernetes, Apache Hadoop, etc..). 
 - **application:** Parameters specific to the application deployed inside a container, which in the simplest general case is the path to the Application entry point (script)
 - **data:** Data reference passed to the application. If null, the data referece is adopted by the results of the search offering in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch).
 
