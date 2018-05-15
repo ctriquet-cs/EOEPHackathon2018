@@ -312,14 +312,15 @@ The process itself is a mockup, but sending an example execute request is possib
 </wps:Result>
 ----
 
-==== Proposed Alternatives
-N/A
-
 ==== Experiences with AP & ADES
-WPS 2.0 processes seem a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way. 
+WPS 2.0 processes seem a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. 
 
-==== Other Impressions & Recommendations
-// whatever other impressions, recommendations etc. you have, please put them here
+==== Acknowledgement
 
+The contribution of 52°North was supported by the research project
+WaCoDis (co-funded by the German Federal Ministry of Transport and
+Digital Infrastructure, programme mFund, contract: 19F2038D) and by
+the research project RIESGOS (co-fundend by the German Ministry of
+Research and Education, programme CLIENT-II, contract: 03G0876).
 
 
