@@ -29,8 +29,8 @@ All questions regarding this document should be directed to the editor or the co
 |====================
 |Name |Organization
 |Ingo Simonis | OGC
-|contributor | from organization
-|contributor | from organization   |contributor | from organization
+|David Pérez | Thales Alenia Space
+|Alejandro Mousist | Thales Alenia Space   |contributor | from organization
 |contributor | from organization
 |contributor | from organization   |contributor | from organization
 |contributor | from organization
