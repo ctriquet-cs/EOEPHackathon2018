@@ -53,5 +53,6 @@ The following organizations participated in the Hackathon as sponsors, organizer
 | NRCan (*) | Eurac Research  | Solenix Deutschland GmbH (*)
 | OGC (*)   | Bind to service | Institute e-Austria
 | VITO      |   Cloudsigma       | Space Applications Services
-| C-S  | EUMETSAT  |  SixSq | Thales Alenia Space
+| C-S  | EUMETSAT  |  SixSq
+| Thales Alenia Space |
 |====================
