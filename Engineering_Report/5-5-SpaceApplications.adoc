@@ -40,9 +40,9 @@ The WPS client package of OWSLib does not support the WPS 2.0.0 interface standa
 
 The ASB Tasks Manager is generic in the sense that it is meant to be able to deploy any containerized application into any execution environment, provided it is given the appropriate adapters. At run-time, the component receives the necessary inputs for executing the application. Information necessary for deploying the application is retrieved from its database.
 
-Because the application packages have a strict and straightforward format, the choosen lightweight solution was to use a template to automate their generation. The Python-based template engine Jinja2 uses the template document (see below) and the application properties (example on the next pages) to render the final application package. Please note that not all the possibilities have been implemented in the template. For example, it does not support process parameters of type Bounding Box nor nested inputs.
+Because the application packages have a fixed format, the choosen lightweight solution was to use a template to automate their generation. The Python-based template engine Jinja2 uses the template document (see below) and the application properties (example on the next pages) to render the final application package. Please note that not all the possibilities have been implemented in the template. For example, it does not support process parameters of type Bounding Box nor nested inputs.
 
-.Code Application Package XML/Jinja2 Template
+.Application Package XML/Jinja2 Template
 [source,xml]
 ----
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -181,12 +181,102 @@ Because the application packages have a strict and straightforward format, the c
 </feed>
 ----
 
+The following JSON document is an example data structure that contains the necessary information for rendering the above template and generate an Application Package document.
 
-
+.Example Application Properties
+[source,json]
+----
+{
+    "ap": {
+        "publisher": {},
+        "subtitle": "",
+        "generator": {},
+        "author": {},
+        "catalogues": [],
+        "rights": "OGC EOEP Hackathon 2018",
+        "applications": [
+            {
+                "title": "SnapProcess.SpaceApps",
+                "process": {
+                    "inputs": [
+                        {
+                            "data_type": "LiteralData",
+                            "title": "Input Image",
+                            "abstract": "The path of the image to process",
+                            "formats": [
+                                {
+                                    "mimetype": "text/plain",
+                                    "default": "true",
+                                    "schema": "",
+                                    "encoding": "UTF-8"
+                                }
+                            ],
+                            "max_occurs": "1",
+                            "id": "inputdata",
+                            "min_occurs": "1",
+                            "metadatas": []
+                        },
+                        {
+                            "data_type": "LiteralData",
+                            "title": "Output Path",
+                            "abstract": "The output path must be placed into /target directory",
+                            "formats": [
+                                {
+                                    "mimetype": "text/plain",
+                                    "default": "true",
+                                    "schema": "",
+                                    "encoding": "UTF-8"
+                                }
+                            ],
+                            "max_occurs": "1",
+                            "id": "outputdata",
+                            "min_occurs": "1",
+                            "metadatas": []
+                        }
+                    ],
+                    "abstract": "",
+                    "id": "SnapProcess.SpaceApps",
+                    "outputs": [
+                        {
+                            "data_type": "LiteralData",
+                            "title": "Product URL",
+                            "abstract": "product url",
+                            "formats": [
+                                {
+                                    "mimetype": "text/plain",
+                                    "default": "true",
+                                    "schema": "",
+                                    "encoding": "UTF-8"
+                                }
+                            ],
+                            "id": "ProductURL",
+                            "metadatas": []
+                        }
+                    ],
+                    "title": "SnapProcess.SpaceApps"
+                },
+                "docker_cmd": "gpt -c 8G -q 8 /S1_Cal_Deb_ML_Spk_TC_cmd.xml -Poutputdata=${outputdata} -Pinputdata=${inputdata}",
+                "content": "Process deployed through ASB platform",
+                "id": "eoeph18-snapprocessspaceapps-1_5f2c9acf-82d3-455c-807a-3a9e70b7e4e1",
+                "docker_image": "thalesaleniaspace/snap:latest"
+            }
+        ],
+        "title": "SnapProcess.SpaceApps",
+        "id": "eoeph18-snapprocessspaceapps-1_5f2c9acf-82d3-455c-807a-3a9e70b7e4e1"
+    }
+}
+----
 
 
 ====== Interactions with the ADES WPS Interface
 
+When the ASB Task Manager receives an execution request from the workflow engine, it fetches the definition of the process, its input and output parameters, and the data types from its database and generates the Application Package document.
+
+The component then verifies that the application is not already deployed in the ADES (using the configured process title string). If so, it is not deployed again. If not, the DeployProcess process is executed (synchronously) and provided with the Application Package. When the deployment is complete, the client verifies that the application is now listed in the WPS offerings.
+
+The component then generates a process Execute request and sends it to the ADES. This execution is asynchronous. A GetStatus request is issued at regular interval. When the execution is complete, a GetResult request is issued to obtain the outputs.
+
+The ASB Task Manager executes the UndeployProcess process on the ADES to remove the application from its offerings.
 
 
 ==== Proposed Alternatives
@@ -195,9 +285,30 @@ Because the application packages have a strict and straightforward format, the c
 ==== Experiences with AP & ADES
 // please describe your experiences with the Application Package and the Application Deployment and Execution Service here.
 
+The generation of the Application Packages did not pose specific problems. The EP Application Package E.R. is detailed enough to understand how the applications metadata must be encoded as Atom feeds.
+
+The integration of the client component with the ADES of Thales Alenia Space has required some adaptations on both sides. The main incompatibilities are listed hereafter:
+
+* The DeployProcess and UndeployProcess processes did not have the expected title.
+* The UndeployProcess input parameter did not have the expected identifier.
+* The DeployProcess implementation was expecting a non-empty process abstract string (even though it is optional in WPS 2.0.0).
+* The application was expecting two inputs: "Input Image" and "Output Path". Because the first parameter can only receive the path to a single image, the application had to be executed several times, once for each image in the AOI.
+* The Application Package was expecting an extra attribute for specifying the actual command to be executed within the Docker container. This attribute has been hardcoded for testing purpose.
+
 ==== Other Impressions & Recommendations
 // whatever other impressions, recommendations etc. you have, please put them here
 
+Application Packages
+
+* The extra attribute required by the Thales implementation of the ADES is an easy way to prepare generic Docker images (only including the SNAP toolbox in this case) and dynamically providing the command to be run at execution time. This is similar to preparing a generic Docker image using a Dockerfile without "CMD" instruction and providing the command dynamically using docker-compose or on the commandline.
+
+* Providing Catalogue information an OpenSearch query string as input may not be the appropriate solution for most of the applications. This removes from the client the control over the exact set of images to be processed by the ADES.
+
+ADES
+
+* The Thales application accepts a single image path per execution. This forces the client to implement a mechanism that executes the application once for each image and collects the results. An application that accepts a list of paths and executes the process on each entry in the list could be a solution in this particular case. However this is not considered generic enough. What is missing is a way to indicate in the AP which of the process inputs receives a list of entries that may be processed independently.
+
+* The WPS 2.0.0 service that implements the ADES collects Job Identifiers that are then listed automatically in the GetCapabilities responses (as possible values for the JobId input parameter of the GetStatus and GetResult operations). By default, nothing prevents a client to get the status and then the results of any of the listed jobs.
 
 //FROM HERE ON, INSTRUCTIONS ONLY FOLLOW. PLEASE DELETE THIS PART
 ==== INSTRUCTIONS
