@@ -15,6 +15,7 @@ Given that, during the Hackathon, Solenix's participation in Testbed-14 was conf
 
 ==== Starting Assets
 Solenix brought the two following assets to the Hackathon:
+
 * The Application Management Client (AMC) developed for OGC Testbed-13
 * Examples of Application Packages in OWS Context format, also taken from Testbed-13
 
@@ -149,6 +150,7 @@ It is reproduced here for completeness.
 ----
 
 Besides the basic administrative information about the application (Burn Scar Detection), the following features are worth highlighting:
+
 * On the first entry, one offering pointing to the Docker container with the application code to be run by ADES
 * Still on the first entry, one offering containing a WPS Process Description of the Burn Scar Detection process, consisting of three inputs - Area of Interest as a WKT string (the default polygon is the one mentioned previously, for the Northwestern Territories of Canada), Start and Stop times of interest - and one output, for the URL where it will be possible to obtain the results of the processing.
 * On a second entry, a further offering consisting of the OpenSearch collection endpoint to be used as a catalogue and a mapping of field names which is necessary to address the fact that the OpenSearch standard does not specify/constrain this, which leads to different implementations using different names
