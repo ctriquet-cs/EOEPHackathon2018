@@ -15,11 +15,11 @@ Furthermore, 52°North has been active in standardizing geoprocessing. Benjamin 
 Since 52°North provides a WPS implementation and is involved in different projects dealing with Earth Observation data, 52°North has a high interest in the activities for standardizing the processing of large amounts of Earth Observation data.
 
 ==== Implemented Solution
-52°North has implemented an Application Deployment and Execution Service based on the 52°North javaPS framework. The framework fully supports the WPS 2.0 interface. The means to deploy and undeploy processes were implemented as WPS processs themselves. The process descriptions were aligned to the one specified in the OGC Testbed-13: Application Deployment and Execution Service Engineering Report (OGC 17-024). 
+52°North has implemented an Application Deployment and Execution Service based on the 52°North javaPS framework. The framework fully supports the WPS 2.0 interface. The means to deploy and undeploy processes were implemented as WPS processs themselves. The process descriptions were aligned to the ones specified in the OGC Testbed-13: Application Deployment and Execution Service Engineering Report (OGC 17-024). <<img_52nADES>> shows the general sequence of communication between client and server. The requests are described in the following.
 
 [#img_52nADES,reftext='{figure-caption} {counter:figure-num}']
-.52°North WPS with ADES-specific extension
-image::images/52n-ADES.png[width=800,align="center"]
+.Sequence of interaction between client and 52°North WPS 2.0 with ADES-specific extension
+image::images/52n_ADES_Sequence.png[width=800,align="center"]
 
 .DeployProcess description
 [source,xml]
@@ -306,6 +306,8 @@ The process itself is a mockup, but sending an example execute request is possib
 </wps:Execute>
 ----
 
+A single example output TIFF is returned by reference.
+
 .Example execute response for the newly deployed process
 [source,xml]
 ----
@@ -322,14 +324,15 @@ The process itself is a mockup, but sending an example execute request is possib
 ----
 
 ==== Experiences with AP & ADES
-The concept of the ADES works well with WPS and the 52°North WPS could be easily extended with the necessary functionality. WPS 2.0 processes are a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. The 52°North ADES was used for testing by several client developers during the Hackathon. It supports the deployment and execution of new processes based on Application Packages. The back-end implementation, i.e. deploying the Docker container specified in the Application Package required more time than initially anticipated, so we had to create a mock-up for this functionality. In Testbed-14 different approaches for enabling WPS with transactional functionality are explored. The Testbed-14 WPS-T ER will specify, how transactional behavior can be implemented for WPS using additional dedicated operations for deploying and undeploying processes. 
+The concept of the ADES works well with WPS and the 52°North WPS could be easily extended with the necessary functionality. WPS 2.0 processes are a good means for deploying Application Packages and creating new WPS processes. The input- and output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. The 52°North ADES was used for testing by several client developers during the Hackathon. It supports the deployment and execution of new processes based on Application Packages. The back-end implementation, i.e. deploying the Docker container specified in the Application Package required more time than initially anticipated, so we had to create a mock-up for this functionality. 
+In the OGC Testbed-13: Application Deployment and Execution Service Engineering Report two approaches for implementing an ADES are described. One approach is using WPS processes. This was implemented during the EOEP Hackathon. An alternative approach used a transactional extension for WPS 2.0. In the OGC Testbed-14 different approaches for enabling WPS with transactional functionality are further explored. The Testbed-14 WPS-T ER will specify how transactional behavior can be implemented for WPS using additional dedicated operations for deploying and undeploying processes. Also REST-based approaches will be explored. Findings from the EOEP Hackathon will be taken into account for discussing these different approaches.
 
 ==== Acknowledgement
 
 The contribution of 52°North was supported by the research project
 WaCoDis (co-funded by the German Federal Ministry of Transport and
 Digital Infrastructure, programme mFund, contract: 19F2038D) and by
-the research project RIESGOS (co-funden by the German Ministry of
+the research project RIESGOS (co-funded by the German Ministry of
 Research and Education, programme CLIENT-II, contract: 03G0876).
 
 
