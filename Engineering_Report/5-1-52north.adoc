@@ -8,14 +8,14 @@
 
 ==== Motivation to Participate
 
-52°North is involved in several projects dealing with processing of large amounts of Earth Observation data. For example, the research project WaCoDis aims to inplement a geoinformation infrastructure for river basin management monitoring tasks including water quality control, water protection and protection of access to clean water. For this purpose remote sensing data from the Copernicus program, waether data and in-situ sensor data will be combined, merged and analyzed. Another example is the RIESGOS research project, which aims to implement multi-risk assessment from natural hazards by utilizing standardized service interfaces.
+52°North is involved in several projects dealing with processing of large amounts of Earth Observation data. For example, the research project WaCoDis aims to implement a geo-information infrastructure for river basin management monitoring tasks including water quality control, water protection and protection of access to clean water. For this purpose remote sensing data from the Copernicus program, weather data and in-situ sensor data will be combined, merged and analyzed. Another example is the RIESGOS research project, which aims to implement multi-risk assessment from natural hazards by utilizing standardized service interfaces.
 
 Furthermore, 52°North has been active in standardizing geoprocessing. Benjamin Pross is currently leading the Web Processing Service 2.0 SWG at OGC. The 52°North WPS implementation fully supports WPS 1.0.0 and 2.0 and is widely used. It has also been used in Testbed-13 Earth Observation Clouds thread.
 
-Since 52°North provides a WPS implementation and is involed in different project dealing Earth Observation data already, the EOEP Hackathon was a good opportunity for us to exercise and increase our knowledge.
+Since 52°North provides a WPS implementation and is involved in different project dealing Earth Observation data already, the EOEP Hackathon was a good opportunity for us to exercise and increase our knowledge.
 
 ==== Implemented Solution
-52°North has implemented an Application Deployment and Execution Service based on the 52°North javaPS framework The framework fully supports the WPS 2.0 interface. The means to deploy and undeploy processes were implemented as WPS processs themself. The process descriptions were aligned to the one specified in the OGC Testbed-13: Application Deployment and Execution Service Engineering Report (OGC 17-024). 
+52°North has implemented an Application Deployment and Execution Service based on the 52°North javaPS framework. The framework fully supports the WPS 2.0 interface. The means to deploy and undeploy processes were implemented as WPS processs themselves. The process descriptions were aligned to the one specified in the OGC Testbed-13: Application Deployment and Execution Service Engineering Report (OGC 17-024). 
 
 [#img_52nADES,reftext='{figure-caption} {counter:figure-num}']
 .52°North WPS with ADES-specific extension
@@ -181,22 +181,22 @@ Based on the process descriptions, execute requests could be send to the ADES.
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <wps:Execute xmlns:wps="http://www.opengis.net/wps/2.0"
-	xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xlink="http://www.w3.org/1999/xlink"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd"
-	service="WPS" version="2.0.0" response="document" mode="sync">
-	<ows:Identifier>UndeployProcess</ows:Identifier>
-	<wps:Input id="processIdentifier">
-		<wps:Data mimeType="text/xml">
-		<wps:LiteralValue>http://www.opengis.net/eoephack2018/burnscar</wps:LiteralValue>
-		</wps:Data>
-	</wps:Input>
-	<wps:Output id="undeployResult" transmission="value"
-		mimeType="text/xml" schema="https://raw.githubusercontent.com/bpross-52n/common-xml/project/eoep/52n-ogc-schema/src/main/resources/META-INF/xml/wps/2.0/wpsUndeployResult.xsd"/>
+        xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd"
+        service="WPS" version="2.0.0" response="document" mode="sync">
+        <ows:Identifier>UndeployProcess</ows:Identifier>
+        <wps:Input id="processIdentifier">
+                <wps:Data mimeType="text/xml">
+                <wps:LiteralValue>http://www.opengis.net/eoephack2018/burnscar</wps:LiteralValue>
+                </wps:Data>
+        </wps:Input>
+        <wps:Output id="undeployResult" transmission="value"
+                mimeType="text/xml" schema="https://raw.githubusercontent.com/bpross-52n/common-xml/project/eoep/52n-ogc-schema/src/main/resources/META-INF/xml/wps/2.0/wpsUndeployResult.xsd"/>
 </wps:Execute>
 ----
 
-Based on the Application Package, that is send along as execute-input, a new process wille be created and made available in the capabilities. The process summary will be returned in the execute response.
+Based on the Application Package, that is send along as execute-input, a new process will be created and made available in the capabilities. The process summary will be returned in the execute response.
 
 .DeployProcess execute response
 [source,xml]
@@ -286,23 +286,23 @@ The process itself is a mockup, but sending an example execute request is possib
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <wps:Execute xmlns:wps="http://www.opengis.net/wps/2.0"
-	xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xlink="http://www.w3.org/1999/xlink"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd"
-	service="WPS" version="2.0.0" response="document" mode="sync">
-	<ows:Identifier>http://www.opengis.net/eoephack2018/burnscar</ows:Identifier>
-	<wps:Input id="timeWindow">
-		<wps:Data mimeType="text/plain">2017-06-17T/2017-06-28TZ</wps:Data>
-	</wps:Input>
-	<wps:Input id="aoi">
-		<wps:Data mimeType="text/xml">
-			<ows:BoundingBox crs="http://www.opengis.net/def/crs/EPSG/0/4326">
-				<ows:LowerCorner>59.913464 -136.448354</ows:LowerCorner>
-				<ows:UpperCorner>78.794937 -101.931600</ows:UpperCorner>
-			</ows:BoundingBox>
-		</wps:Data>
-	</wps:Input>
-	<wps:Output id="resultURI" transmission="value" mimeType="text/plain" />
+        xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd"
+        service="WPS" version="2.0.0" response="document" mode="sync">
+        <ows:Identifier>http://www.opengis.net/eoephack2018/burnscar</ows:Identifier>
+        <wps:Input id="timeWindow">
+                <wps:Data mimeType="text/plain">2017-06-17T/2017-06-28TZ</wps:Data>
+        </wps:Input>
+        <wps:Input id="aoi">
+                <wps:Data mimeType="text/xml">
+                        <ows:BoundingBox crs="http://www.opengis.net/def/crs/EPSG/0/4326">
+                                <ows:LowerCorner>59.913464 -136.448354</ows:LowerCorner>
+                                <ows:UpperCorner>78.794937 -101.931600</ows:UpperCorner>
+                        </ows:BoundingBox>
+                </wps:Data>
+        </wps:Input>
+        <wps:Output id="resultURI" transmission="value" mimeType="text/plain" />
 </wps:Execute>
 ----
 
@@ -322,14 +322,14 @@ The process itself is a mockup, but sending an example execute request is possib
 ----
 
 ==== Experiences with AP & ADES
-The concept of the ADES works well with WPS and the 52°North WPS could be easily extended with the nacessary functionality. WPS 2.0 processes are a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. The 52°North ADES was used for testing by several client developers during the Hackathon. It supports the deployment and execution of new processes based on Application Packages. The backend implementation, i.e. deploying the docker-container specified in the Application Package was not trivial and we had to create a mock-up if this functionality. In Testbed-14 different approaches for enabling WPS with transactional functionality are explored. The Testbed-14 WPS-T ER will specify, how transactional behaviour can be implemented for WPS using additional dedicated operations for deploying and undeploying processes. 
+The concept of the ADES works well with WPS and the 52°North WPS could be easily extended with the necessary functionality. WPS 2.0 processes are a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. The 52°North ADES was used for testing by several client developers during the Hackathon. It supports the deployment and execution of new processes based on Application Packages. The back-end implementation, i.e. deploying the Docker container specified in the Application Package was not trivial and we had to create a mock-up if this functionality. In Testbed-14 different approaches for enabling WPS with transactional functionality are explored. The Testbed-14 WPS-T ER will specify, how transactional behavior can be implemented for WPS using additional dedicated operations for deploying and undeploying processes. 
 
 ==== Acknowledgement
 
 The contribution of 52°North was supported by the research project
 WaCoDis (co-funded by the German Federal Ministry of Transport and
 Digital Infrastructure, programme mFund, contract: 19F2038D) and by
-the research project RIESGOS (co-fundend by the German Ministry of
+the research project RIESGOS (co-funden by the German Ministry of
 Research and Education, programme CLIENT-II, contract: 03G0876).
 
 
