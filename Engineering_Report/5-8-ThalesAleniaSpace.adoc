@@ -9,13 +9,13 @@
 
 ==== Motivation to Participate
 // please describe briefly why you participated
-Our participation to the EOEP Hackathon was aimed for positioning inside earth observation with different solutions using real products from Sentinel 1, working with common tools as SNAP or WPS server development and providing our background knowledge in different tools and services. Particulary we are interested in develop a server back-end fully integrated with a client and make a portable solution, which can be installed in a cloud totally accesible.
+Our participation to the EOEP Hackathon was aimed for positioning inside the earth observation with different solutions using real products from Sentinel 1, working with common tools as SNAP or WPS server development and providing our background knowledge in different tools and services. Particulary, we are interested in developing a server back-end fully integrated with a client and make a portable solution, which can be installed in a cloud totally accessible.
 
 ==== Implemented Solution
 // please describe your implemented solution here. Provide as much detail as you think reasonable.
-At this chapter, it will be described the final Thales Alenia Space implemented solution, after testing different solution (can be seen in next chapter).
+At this chapter, it will be described the final Thales Alenia Space implemented solution, after testing different solution (can be seen in the next chapter).
 
-During the hackathon, several developments and configurations were done. First of all the cloud required had to be configured in order to upload the developments there. At the begining it was chosen Cloudferro, but after uploading our developments there and due a lack of resources in the cloud, during the hackathon meeting we migrate all the developments to Boreal Cloud, where we can have the same size machines.
+During the hackathon, several developments and configurations were done. First of all, the cloud required had to be configured in order to upload the developments there. At the begining, it was chosen Cloudferro, but after uploading our developments there and due a lack of resources in the cloud, during the hackathon meeting we migrate all the developments to Boreal Cloud, where we can have the same size machines.
 
 Cloudferro configuration:
 
@@ -23,23 +23,23 @@ Cloudferro configuration:
  - 1 host: 8vCPU and 64GB RAM
  - 4 hosts: 8vCPU and 32GB RAM
  
-As can be seen the machines were different, therefore we had a lack of performance in those machines, having as maximun of 15 workers (SNAP executions) executed at the same time. The total performance for the whole cluster was 120vCPU and 832GB RAM.
+As can be seen the machines were different, therefore we had a lack of performance in those machines, having as maximum of 15 workers (SNAP executions) executed at the same time. The total performance for the whole cluster was 120vCPU and 832GB RAM.
 
 Boreal cloud configuration:
 
 - 7 hosts: 40vCPU and 163GB RAM
 
-Using this last configuration, we got an improved configuration using 3 nodes less and the total performance for the whole cluster was impovred 160vCPU and 120GB RAM compared with the previous option. After migrate to this configuration, the maximun number of workers were 35, therefore having 140 products to process, the whole process last around 45 minutes, using less than four executions.
+Using this last configuration, we got an improved configuration using 3 nodes less and the total performance for the whole cluster was empowered 160vCPU and 120GB RAM compared with the previous option. After migrate to this configuration, the maximum number of workers were 35, therefore having 140 products to process, the whole process last around 45 minutes, using less than four executions.
 
-The products from sentinel and the DEM where mounted in the machines as mount point, therefore were easy accesible. In the first cloud (cloudferro), those mounting points were unmount automatically after some time, therefore this connection was not reliable enough to automate the process.
+The products from sentinel and the DEM were mounted on the machines as mount point, therefore were easily accessible. In the first cloud (cloudferro), those mounting points were unmount automatically after some time, therefore this connection was not reliable enough to automate the process.
 
-In that cloud environment were needed just to install docker-ce and include all the hosts in the same cluster using docker swarm. Once the docker swarm was initiated and working, the docker images can be downloaded in order to execute all the processes. Thales Alenia Space has also write a docker compose file in order to execute the process automatically. This docker compose also limited the number of memory and CPU for the execution, therefore if the SNAP process needs 8vCPU and 24GB RAM and we have a machine with 16vCPU and 52 GB RAM, when up the docker compose, will limit the SNAP executions to two. In other machines, it will be executed more if fit in the machine requirements.
+In that cloud environment were needed just to install docker-ce and include all the hosts in the same cluster using docker swarm. Once the docker swarm was initiated and working, the docker images can be downloaded in order to execute all the processes. Thales Alenia Space has also written a docker compose file in order to execute the process automatically. This docker compose also limited the number of memory and CPU for the execution, therefore if the SNAP process needs 8vCPU and 24GB RAM and we have a machine with 16vCPU and 52 GB RAM, when up the docker compose, will limit the SNAP executions to two. On other machines, it will be executed more if fit in the machine requirements.
 
 This made the portability really easy, having to install just docker and introduce the hosts in the same cluster if we want to migrate the solution.
 
-At high scale, the implemented solution had to be based in the WPS server (2.0) and SNAP docker image. First of all an application package was designed in order to deploy, execute and undeploy commands. This xml file calle the ADES, which connected with the WPS launched the SNAP application inside the cluster.
+At high scale, the implemented solution had to be based on the WPS server (2.0) and SNAP docker image. First of all an application package was designed in order to deploy, execute and undeploy commands. This xml file called the ADES, which connected with the WPS launched the SNAP application inside the cluster.
 
-To make this possible, we used a queue message service (ActiveMQ) in order to queue messages from the WPS and dequeue in the nodes (listener). After dequeue the messages the process was executed in the nodes calling the SNAP application, which requires two inputs (eodata and DEM) and after processing an output was stored in a public accesible bucket in .tif format. The processing time for a single product using SNAP is around 13 minutes.
+To make this possible, we used a queue message service (ActiveMQ) in order to queue messages from the WPS and dequeue in the nodes (listener). After dequeue the messages the process was executed in the nodes calling the SNAP application, which requires two inputs (eodata and DEM) and after processing an output was stored in a public accessible bucket in .tif format. The processing time for a single product using SNAP is around 13 minutes.
 
 The outline of the Thales solution can be seen in <<img_outline>>
 
@@ -47,7 +47,7 @@ The outline of the Thales solution can be seen in <<img_outline>>
 .Hackathon outline
 image::images/TASE_outline_1.png[width=800,align="center"]
 
-The final solution was composed of a SOAP API to connect the WPS client with the North52 WPS server and this connects with the queue message service, which sends the execution to the workers (nodes). Also in order to test the solution launching all the products to process, we used Jmeter to automate the process in case we could not integrate with a real client. The final implemented solution can be seen in <<img_implemented>>
+The final solution was composed of a SOAP API to connect the WPS client with the North52 WPS server and this connects with the queue message service, which sends the execution to the workers (nodes). Also, in order to test the solution launching all the products to process, we used Jmeter to automate the process in case we could not integrate with a real client. The final implemented solution can be seen in <<img_implemented>>
 
 [#img_implemented,reftext='{figure-caption} {counter:figure-num}']
 .Final TASE implemented solution
@@ -56,7 +56,7 @@ image::images/TASE_implemented.png[width=800,align="center"]
 
 ==== Proposed Alternatives
 // if you have any recommendations on other solutions, please describe them here
-During the period of the hackathon we tried several options to make the backend works. First of all our idea was to implement faas (function as a service) integrated with docker swarm, in order to manage the balancing between all the nodes when running SNAP application to process the products. This implemented solution can be seen in <<img_faas>>
+During the period of the hackathon we tried several options to make the backend works. First of all our ideas was to implement faas (function as a service) integrated with docker swarm, in order to manage the balancing between all the nodes when running SNAP application to process the products. This implemented solution can be seen in <<img_faas>>
 
 [#img_faas,reftext='{figure-caption} {counter:figure-num}']
 .Faas implemented solution of TASE
@@ -70,7 +70,7 @@ After the trial, the balancing in the faas solution was not working properly, so
 image::images/TASE_jaas.png[width=800,align="center"]
 
 
-Discarding the previous two solutions, we go on for the solution done in implemented solution section, using a Thales Alenia Space designed solution reusing as WPS server, the server done by North52.
+Discarding the previous two solutions, we go on for the solution done in implemented solution section, using a Thales Alenia Space designed solution reusing as WPS server, the server is done by North52.
 
 ==== Experiences with AP & ADES
 // please describe your experiences with the Application Package and the Application Deployment and Execution Service here.
@@ -80,8 +80,8 @@ Discarding the previous two solutions, we go on for the solution done in impleme
 // whatever other impressions, recommendations etc. you have, please put them here
 
 Different constrains have been found during the hackathon implementation:
-The SNAP application has two major improvements which give more value to the tool. In first place, the application size should be reduced in order to work properly in a docker clusterized environment. The other improvement is the based on the kind of application, which is monolitich, which means that cannot be split in the different workers along the cluster. With this approach, the processing time of the execution will never be reduced, so it will be needed more computers or larger computers in order to run more than one SNAP application at the same time. Using an environment based on spark, and adapting the tool, this time can be reduced in order to do calls in near real time.
+The SNAP application has two major improvements which give more value to the tool. In the first place, the application size should be reduced in order to work properly in a docker clustered environment. The other improvement is the based on the kind of application, which is monolitich, which means that cannot be split in the different workers along the cluster. With this approach, the processing time of the execution will never be reduced, so it will be needed more computers or larger computers in order to run more than one SNAP application at the same time. Using an environment based on spark, and adapting the tool, this time can be reduced in order to make calls in near real time.
 
-Based on the size and the computing requirements of SNAP, the cloud where the process is run should be big enough to be able to run the process. Most of the issues regarding the cloud were in terms of performance and accessing through the different open ports. Also the mount point in the cloud has to be reliable enought to allow the execution of SNAP.
+Based on the size and the computing requirements of SNAP, the cloud where the process is run should be big enough to be able to run the process. Most of the issues regarding the cloud were in terms of performance and accessing through the different open ports. Also the mount point in the cloud has to be reliable enough to allow the execution of SNAP.
 
 The Hackathon was valuable for Thales Alenia Space as we have not been involved in the Testbed activities. It allowed us to develop and test the communication with clients and ADES.
