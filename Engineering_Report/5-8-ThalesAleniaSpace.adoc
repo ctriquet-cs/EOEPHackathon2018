@@ -43,11 +43,13 @@ To make this possible, we used a queue message service (ActiveMQ) reused and mod
 
 The outline of the Thales solution can be seen in <<img_outline>>
 
+
 [#img_outline,reftext='{figure-caption} {counter:figure-num}']
 .Hackathon outline
 image::images/TASE_outline_1.png[width=800,align="center"]
 
 The final solution was composed of a SOAP API to connect the WPS client with the North52 WPS server and this connects with the queue message service, which sends the execution to the workers (nodes). Also, in order to test the solution launching all the products to process, we used Jmeter to automate the process in case we could not integrate with a real client. The final implemented solution can be seen in <<img_implemented>>
+
 
 [#img_implemented,reftext='{figure-caption} {counter:figure-num}']
 .Final TASE implemented solution
@@ -58,12 +60,14 @@ image::images/TASE_implemented.png[width=800,align="center"]
 // if you have any recommendations on other solutions, please describe them here
 During the period of the hackathon we tried several options to make the backend works. First of all our ideas was to implement faas (function as a service) integrated with docker swarm, in order to manage the balancing between all the nodes when running SNAP application to process the products. This implemented solution can be seen in <<img_faas>>
 
+
 [#img_faas,reftext='{figure-caption} {counter:figure-num}']
 .Faas implemented solution of TASE
 image::images/TASE_faas.png[width=800,align="center"]
 
 
 After the trial, the balancing in the faas solution was not working properly, so the solution had to be changed and the alternative approach was using jaas (jobs as a service), which is able to run docker images balancing the load between the whole docker swarm cluster. Using this solution, in an automated environment where the tasks were run automatically, in some of the nodes those executions were not properly run, and therefore this solution was not valid to test the performance.This implemented solution can be seen in <<img_jaas>>
+
 
 [#img_jaas,reftext='{figure-caption} {counter:figure-num}']
 .Jaas implemented solution of TASE
@@ -81,7 +85,7 @@ The demonstration developed by Thales Alenia Space involved the execution of the
  - Application Execution
  - Application UnDeployment
  
- The WPS modified server, returns the public url where the product processed was placed whenn the process finish, which will be returned to the client in order to display the product.
+The WPS modified server, returns the public url where the product processed was placed whenn the process finish, which will be returned to the client in order to display the product.
  
 
 ==== Other Impressions & Recommendations
