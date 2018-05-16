@@ -11,7 +11,7 @@
 ==== Motivation to Participate
 // please describe briefly why you participated
 
-We are striving after development of interoperable research independent of cloud processing facilities to foster exchange and repeatability.
+We are striving after development of interoperable research independent of cloud processing facilities to foster exchange and repeatability. In particular the Institute for Earth Observation at EURAC Research has the need to be able to run transparently applications on different clusters, where data and computing resources are available.
 The proposed exercise was perfectly in line with what we currently try to achieve in the in the *H2020 openEO project* ( http://openeo.eu ), where we are already developing a driver to connect the *openEO API* with the *OGC WC(P)S 2.0* and it processing extension. So participating in this hackathon gave as the possibility to implement and test web processing services based on processing chains organized in containers and link it to the RESTful services that we are currently defining and developing in the *openEO* project.
 
 ==== Implemented Solution
