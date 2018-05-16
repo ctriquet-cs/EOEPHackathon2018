@@ -4,13 +4,18 @@
 // Please provide content under the headlines given below. Please delete the instructions. At the bottom, you find some instructions on ASCIIDOC.
 
 // Please provide the name of all people you would like to have included in the list of contributing authors on top, following the pattern below:
-//Ingo Simonis | OGC
+Jeroen Dries | VITO
 
 ==== Motivation to Participate
-// please describe briefly why you participated
+VITO operates the PROBA-V Exploitation Platform
+VITO is a potential provider of application packages
+VITO is a potential user of application packages
 
 ==== Implemented Solution
 // please describe your implemented solution here. Provide as much detail as you think reasonable.
+1. Deployment of simplified application package
+2. Direct execution of arbitrary command in arbitrary docker image, no deploy needed
+3. Deploy of a full WPS packaged as Docker.
 
 ==== Proposed Alternatives
 // if you have any recommendations on other solutions, please describe them here
