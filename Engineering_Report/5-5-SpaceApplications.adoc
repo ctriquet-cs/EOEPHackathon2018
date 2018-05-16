@@ -1,16 +1,193 @@
 [[SpaceApplications]]
-=== Space Applications
+=== Space Applications Services
 
 // Please provide content under the headlines given below. Please delete the instructions. At the bottom, you find some instructions on ASCIIDOC.
 
 // Please provide the name of all people you would like to have included in the list of contributing authors on top, following the pattern below:
-//Ingo Simonis | OGC
+//Bernard Valentin | Space Applications Services
+//Leslie Gale | Space Applications Services
 
 ==== Motivation to Participate
 // please describe briefly why you participated
 
+Space Applications Services has been developing a platform named ASB (for Automated Service Builder) for several years now. It has started before the draft Exploitation Platform Open Architecture was published and thus also before the Testbed-13 took place.
+
+ASB has a mechanism to dynamically deploy Docker container images and run processes pre-installed in these containers in cloud environments. The actual deployment of the containers is delegated to Marathon (which relies on Mesos for the selection of the target worker nodes) and each container runs its own lightweight WPS service.
+
+During the Hackathon, we have implemented a client component that dynamically generates an Application Package using the information we have in database (including processes, inputs/outputs, datatypes), then interacts with the WPS interface of the ADES implementations to deploy the application and trigger the executions.
+
+The key differences between the Marathon-based and the ADES-based implementations are:
+
+* With Marathon, deployed containers run a pre-installed WPS service that exposes ("offers") one or more arbitrary processes. After the deployment through Marathon, the client must communicate directly with the containers to execute the actual processes.
+
+* With ADES WPS, deployed containers run arbitrary code as soon as they are started. After the deployment through the ADES, the client must still communicate with the ADES to execute the actual processes (newly added in the ADES offerings).
+
+
+During the Hackathon, the new client component has been tested against the ADES implemented by Thales Alenia Space and 52°North.
+
 ==== Implemented Solution
 // please describe your implemented solution here. Provide as much detail as you think reasonable.
+
+The ASB core component in charge of requesting the deployment of the process/application images and their execution is the Tasks Manager. As most of the other ASB core components, it is implemented in the Python scripting language. It uses the WPS client package provided by the open-source library OWSLib (https://github.com/geopython/OWSLib/) to communicate with WPS servers.
+
+===== Added support for WPS 2.0.0 in the client library
+
+The WPS client package of OWSLib does not support the WPS 2.0.0 interface standard. The initial task has thus been to add basic support for WPS 2.0.0 to OWSLib, at least to be able to successfully communicate with the ADES implementations for deploying, undeploying and executing applications, both in synchronous and asynchronous modes.
+
+===== Added support for ADES in the ASB Tasks Manager
+
+====== Dynamic generation of the Application Package
+
+The ASB Tasks Manager is generic in the sense that it is meant to be able to deploy any containerized application into any execution environment, provided it is given the appropriate adapters. At run-time, the component receives the necessary inputs for executing the application. Information necessary for deploying the application is retrieved from its database.
+
+Because the application packages have a strict and straightforward format, the choosen lightweight solution was to use a template to automate their generation. The Python-based template engine Jinja2 uses the template document (see below) and the application properties (example on the next pages) to render the final application package. Please note that not all the possibilities have been implemented in the template. For example, it does not support process parameters of type Bounding Box nor nested inputs.
+
+.Code Application Package XML/Jinja2 Template
+[source,xml]
+----
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml"
+    xmlns:owc="http://www.opengis.net/owc/1.0" xmlns:os="http://a9.com/-/spec/opensearch/1.1/"
+    xml:lang="en">
+  <link rel="profile" href="http://www.opengis.net/spec/owc-atom/1.0/req/core"
+      title="This file is compliant with version 1.0 of OGC Context"/>
+  <link rel="profile" href="http://www.opengis.net/tb13/eoc"
+      title="This file is compliant with Testbed-13 EOC Thread for Application Packing"/>
+  <id>{{ ap.id }}</id>
+  <title>{{ ap.title }}</title>
+  <subtitle type="text">{{ ap.subtitle }}</subtitle>
+  <updated>{{ ap.updated }}</updated>
+  <author>
+    <email>{{ ap.author.email }}</email>
+  </author>
+  {% if ap.generator.uri %}<generator uri="{{ ap.generator.uri }}" version="{{ ap.generator.version }}">{{ ap.generator.title }}</generator>{% endif %}
+  {% if ap.publisher.title %}<dc:publisher>{{ ap.publisher.title }}</dc:publisher>{% endif %}
+  {% if ap.rights %}<rights>{{ ap.rights }}</rights>{% endif %}
+
+  {% if ap.aoi %}
+  <!-- Geographic Area of interest for the App -->
+  <georss:where>
+    <gml:Polygon xmlns:gml="http://www.opengis.net/gml">
+      <gml:exterior>
+        <gml:LinearRing>
+          <gml:posList>{{ ap.aoi }}</gml:posList>
+        </gml:LinearRing>
+      </gml:exterior>
+    </gml:Polygon>
+  </georss:where>
+  {% else %}
+  <!-- No geographic area of interest available for the App -->
+  {% endif %}
+  {% if ap.toi %}
+  <!-- A date or range of dates relevant to the App -->
+  <dc:date>{{ ap.toi }}</dc:date>
+  {% else %}
+  <!-- No relevant date or range of dates available for the App -->
+  {% endif %}
+  {% for app in ap.applications %}
+  <entry>
+    <id>{{ app.id }}</id>
+    <link rel="profile" href="http://www.opengis.net/tb13/eoc/application"
+      title="This entry contains an application as specified by Testbed-13 EOC Thread"/>
+    <title>{{ app.title }}</title>
+    <content type="text">{{ app.content }}</content>
+
+    {% if app.docker_image %}
+    <owc:offering code="http://www.opengis.net/tb13/eoc/docker">
+      <owc:content {% if app.docker_cmd %}cmd="{{ app.docker_cmd }}"{% endif %} type="text/plain">{{ app.docker_image }}</owc:content>
+    </owc:offering>
+    {% endif %}
+    <!-- THE WPS PROCESS DESCRIPTION -->
+    <owc:offering code="http://www.opengis.net/tb13/eoc/wpsProcessOffering">
+      <owc:content type="application/xml">
+        <wps:ProcessOffering jobControlOptions="async-execute dismiss"
+                             outputTransmission="value reference" xmlns:ows="http://www.opengis.net/ows/2.0"
+                             xmlns:wps="http://www.opengis.net/wps/2.0" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <wps:Process>
+            <ows:Title>{{ app.process.title }}</ows:Title>
+            <ows:Abstract>{% if app.process.abstract %}{{ app.process.abstract }}{% else %}No abstract{% endif %}</ows:Abstract>
+            <ows:Identifier>{{ app.process.id }}</ows:Identifier>
+            
+            {% for input in app.process.inputs %}
+            <wps:Input minOccurs="{{ input.min_occurs }}" maxOccurs="{{ input.max_occurs }}">
+              <ows:Title>{{ input.title }}</ows:Title>
+              <ows:Abstract>{{ input.abstract }}</ows:Abstract>
+              <ows:Identifier>{{ input.id }}</ows:Identifier>
+              {% for metadata in input.metadatas %}
+              <ows:Metadata>
+                <atom:link rel="{{ metadata.rel }}" href="{{ metadata.href }}"/>
+              </ows:Metadata>
+              {% endfor %}
+              {% if input.data_type|lower == "complexdata" %}
+              <wps:ComplexData>
+                <wps:Format mimeType="{{ input.complexdata.mimetype }}" default="{{ input.complexdata.default }}"/>
+              </wps:ComplexData>
+              {% elif input.data_type|lower == "literaldata" %}
+              <wps:LiteralData>
+                {% for format in input.formats %}
+                <wps:Format mimeType="{{ format.mimetype }}" encoding="{{ format.encoding }}" schema="{{ format.schema }}" default="{{ format.default }}"/>
+                {% endfor %}
+              </wps:LiteralData>
+              {% elif input.data_type|lower == "boundingbox" %}
+                <!-- wps:BoundingBox TO BE IMPLEMENTED -->
+              {% endif %}
+            </wps:Input>
+            {% endfor %}
+
+            {% for output in app.process.outputs %}
+            <wps:Output>
+              <ows:Title>{{ output.title }}</ows:Title>
+              <ows:Abstract>{{ output.abstract }}</ows:Abstract>
+              <ows:Identifier>{{ output.id }}</ows:Identifier>
+              {% for metadata in output.metadatas %}
+              <ows:Metadata>
+                <atom:link rel="{{ metadata.rel }}" href="{{ metadata.href }}"/>
+              </ows:Metadata>
+              {% endfor %}
+              {% if output.data_type|lower == "complexdata" %}
+              <wps:ComplexData>
+                <wps:Format mimeType="{{ output.complexdata.mimetype }}" default="{{ output.complexdata.default }}"/>
+              </wps:ComplexData>
+              {% elif output.data_type|lower == "literaldata" %}
+              <wps:LiteralData>
+                {% for format in output.formats %}
+                <wps:Format mimeType="{{ format.mimetype }}" encoding="{{ format.encoding }}" schema="{{ format.schema }}" default="{{ format.default }}"/>
+                {% endfor %}
+              </wps:LiteralData>
+              {% elif output.data_type|lower == "boundingbox" %}
+                <!-- wps:BoundingBox TO BE IMPLEMENTED -->
+              {% endif %}
+            </wps:Output>
+            {% endfor %}
+
+          </wps:Process>
+        </wps:ProcessOffering>
+      </owc:content>
+    </owc:offering>
+
+    <category scheme="http://www.opengis.net/tb13/eoc/os" term="LINUX" label="This app runs in Linux"/>
+
+  </entry>
+  {% endfor %}
+
+  {% for cat in ap.catalogues %}
+  <entry>
+    <id>{{ cat.id }}</id>
+    <link rel="profile" href="http://www.opengis.net/tb13/eoc/catalogue"
+        title="This entry contains an catalogue as specified by Testbed-13 EOC Thread"/>
+  </entry>
+  {% endfor %}
+
+</feed>
+----
+
+
+
+
+
+====== Interactions with the ADES WPS Interface
+
+
 
 ==== Proposed Alternatives
 // if you have any recommendations on other solutions, please describe them here
