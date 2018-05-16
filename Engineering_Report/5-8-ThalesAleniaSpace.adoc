@@ -28,11 +28,13 @@ Discarding the previous two solutions, we opt for the solution done in implement
 
 ==== Other Impressions & Recommendations
 // whatever other impressions, recommendations etc. you have, please put them here
-The SNAP application has two major improves which should be done. In first place, the application size should be reduced in order to work properly in a docker clusterized environment.
 
-Based on the size and the computer requirements of SNAP, the cloud where the process is run should be big enough to be able to run the process. Most of the issues regarding the cloud where in terms of performance and accessing through the different open ports. Also the mount point in the cloud has to be reliable enought to allow the execution of SNAP.
+Different constrains have been found during the hackathon implementation:
+The SNAP application has two major improvements which give more value to the tool. In first place, the application size should be reduced in order to work properly in a docker clusterized environment. The other improvement is the based on the kind of application, which is monolitich, which means that cannot be split in the different workers along the cluster. With this approach, the processing time of the execution will never be reduced, so it will be needed more computers or larger computers in order to run more than one SNAP application at the same time. Using an environment based on spark, and adapting the tool, this time can be reduced in order to do calls in near real time.
 
+Based on the size and the computing requirements of SNAP, the cloud where the process is run should be big enough to be able to run the process. Most of the issues regarding the cloud were in terms of performance and accessing through the different open ports. Also the mount point in the cloud has to be reliable enought to allow the execution of SNAP.
 
+The Hackathon was valuable for Thales Alenia Space as we have not been involved in the Testbed activities. It allowed us to develop and test the communication with clients and ADES.
 
 
 
