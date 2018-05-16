@@ -54,5 +54,5 @@ The following organizations participated in the Hackathon as sponsors, organizer
 | OGC (*)   | Bind to service | Institute e-Austria
 | VITO      |   Cloudsigma       | Space Applications Services
 | C-S  | EUMETSAT  |  SixSq
-| Thales Alenia Space |
+| Thales Alenia Space
 |====================
