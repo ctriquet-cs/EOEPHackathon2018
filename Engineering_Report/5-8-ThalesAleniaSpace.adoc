@@ -1,3 +1,45 @@
+=== Thales Alenia Space
+
+// Please provide the name of all people you would like to have included in the list of contributing authors on top, following the pattern below:
+
+ Contributors: 
+ - David Pérez (david.perezizquierdo@thalesaleniaspace.com)
+ - Alejandro Mousist (alejandro.mousist@thalesaleniaspace.com)
+ - Elisa Callejo (e.c@thalesaleniaspace.com)
+
+==== Motivation to Participate
+// please describe briefly why you participated
+Our participation to the EOEP Hackathon was aimed for starting into the earth observation testing different solutions, working with common tools as SNAP or WPS server development and providing our background knowledge in different tools and services. Particulary we are interested in develop a server back-end fully integrated with a client and make a portable solution, which can be installed in a cloud totally accesible.
+
+==== Implemented Solution
+// please describe your implemented solution here. Provide as much detail as you think reasonable.
+
+==== Proposed Alternatives
+// if you have any recommendations on other solutions, please describe them here
+During the period of the hackathon we tried several options to make the backend works. First of all our idea was to implement faas (function as a service) integrated with docker swarm, in order to manage the balancing between all the nodes when running SNAP application to process the products.
+
+
+After that trial, the balancing in the faas solution was not working properly, so the solution had to be changed and the alternative approach was using jaas (jobs as a service), which is able to run docker images balancing the load between the whole docker swarm cluster. Using this solution, in an automated environment where the tasks were run automatically, in some of the nodes those executions were not properly run, and therefore this solution was not valid to test the performance.
+
+Discarding the previous two solutions, we opt for the solution done in implemented solution, using a Thales Alenia Space designed solution.
+
+==== Experiences with AP & ADES
+// please describe your experiences with the Application Package and the Application Deployment and Execution Service here.
+
+==== Other Impressions & Recommendations
+// whatever other impressions, recommendations etc. you have, please put them here
+The SNAP application has two major improves which should be done. In first place, the application size should be reduced in order to work properly in a docker clusterized environment.
+
+Based on the size and the computer requirements of SNAP, the cloud where the process is run should be big enough to be able to run the process. Most of the issues regarding the cloud where in terms of performance and accessing through the different open ports. Also the mount point in the cloud has to be reliable enought to allow the execution of SNAP.
+
+
+
+
+
+//FROM HERE ON, INSTRUCTIONS ONLY FOLLOW. PLEASE DELETE THIS PART
+==== INSTRUCTIONS
+
+
 [[ExampleClause]]
 == Example Clause
 
