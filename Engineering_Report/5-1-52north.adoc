@@ -5,14 +5,16 @@
 
 // Please provide the name of all people you would like to have included in the list of contributing authors on top, following the pattern below:
 //Benjamin Pross | 52°North
+//Matthes Rieke | 52°North
+//Christoph Stasch | 52°North
 
 ==== Motivation to Participate
 
 52°North is involved in several projects dealing with processing of large amounts of Earth Observation data. For example, the research project WaCoDis aims to implement a geo-information infrastructure for river basin management monitoring tasks including water quality control, water protection and protection of access to clean water. For this purpose remote sensing data from the Copernicus program, weather data and in-situ sensor data will be combined, merged and analyzed. Another example is the RIESGOS research project, which aims to implement multi-risk assessment from natural hazards by utilizing standardized service interfaces.
 
-Furthermore, 52°North has been active in standardizing geoprocessing. Benjamin Pross is currently leading the Web Processing Service 2.0 SWG at OGC. The 52°North WPS implementation fully supports WPS 1.0.0 and 2.0 and is widely used. It has also been used in Testbed-13 Earth Observation Clouds thread.
+Furthermore, 52°North has long-time experience in defining and implementing Web-based Geoprocessing tools and is actively contributing to standardizing geoprocessing. Benjamin Pross is currently leading the Web Processing Service 2.0 SWG at OGC. The 52°North WPS implementation fully supports WPS 1.0.0 and 2.0 and is widely used. It has also been used in Testbed-13 Earth Observation Clouds thread.
 
-Since 52°North provides a WPS implementation and is involved in different projects dealing with Earth Observation data, 52°North has a high interest in the activities for standardizing the processing of large amounts of Earth Observation data.
+Since 52°North provides a WPS implementation and is involved in different projects dealing with Earth Observation data, 52°North has a high interest in the activities for standardizing the processing of large amounts of Earth Observation data and wants to contribute with its experience in developing Web-based Geoprocessing systems.
 
 ==== Implemented Solution
 52°North has implemented an Application Deployment and Execution Service based on the 52°North javaPS framework. The framework fully supports the WPS 2.0 interface. The means to deploy and undeploy processes were implemented as WPS processs themselves. The process descriptions were aligned to the ones specified in the OGC Testbed-13: Application Deployment and Execution Service Engineering Report (OGC 17-024). <<img_52nADES>> shows the general sequence of communication between client and server. The requests are described in the following.
