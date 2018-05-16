@@ -13,13 +13,55 @@ Our participation to the EOEP Hackathon was aimed for starting into the earth ob
 
 ==== Implemented Solution
 // please describe your implemented solution here. Provide as much detail as you think reasonable.
+At this chapter, it will be described the final Thales Alenia Space implemented solution, after testing different solution (can be seen in next chapter).
+
+During the hackathon, several developments and configurations were done. First of all the cloud required had to be configured in order to upload the developments there. At the begining it was chosen Cloudferro, but after uploading our developments there and due a lack of resources in the cloud, during the hackathon meeting we migrate all the developments to Boreal Cloud, where we can have the same size machines.
+
+Cloudferro configuration:
+
+ - 5 hosts: 16vCPU and 128GB RAM
+ - 1 host: 8vCPU and 64GB RAM
+ - 4 hosts: 8vCPU and 32GB RAM
+ 
+As can be seen the machines were different, therefore we had a lack of performance in those machines, having as maximun of 15 workers (SNAP executions) executed at the same time.
+
+Boreal cloud configuration:
+
+- 7 hosts: 40vCPU and 163GB RAM
+
+Using this last configuration, we got to improve the configuration
+
+
+The products from sentinel and the DEM where mounted in the machines as mount point, therefore were easy accesible.
+
+The outline of the Thales solution can be seen in <<img_outline>>
+
+[#img_outline,reftext='{figure-caption} {counter:figure-num}']
+.Hackathon outline
+image::images/TASE_outline_1.png[width=800,align="center"]
+
+
+The final implemented solution can be seen in <<img_implemented>>
+
+[#img_implemented,reftext='{figure-caption} {counter:figure-num}']
+.Final TASE implemented solution
+image::images/TASE_implemented.png[width=800,align="center"]
 
 ==== Proposed Alternatives
 // if you have any recommendations on other solutions, please describe them here
-During the period of the hackathon we tried several options to make the backend works. First of all our idea was to implement faas (function as a service) integrated with docker swarm, in order to manage the balancing between all the nodes when running SNAP application to process the products.
+During the period of the hackathon we tried several options to make the backend works. First of all our idea was to implement faas (function as a service) integrated with docker swarm, in order to manage the balancing between all the nodes when running SNAP application to process the products. This implemented solution can be seen in <<img_faas>>
+
+[#img_faas,reftext='{figure-caption} {counter:figure-num}']
+.Faas implemented solution of TASE
+image::images/TASE_faas.png[width=800,align="center"]
 
 
-After that trial, the balancing in the faas solution was not working properly, so the solution had to be changed and the alternative approach was using jaas (jobs as a service), which is able to run docker images balancing the load between the whole docker swarm cluster. Using this solution, in an automated environment where the tasks were run automatically, in some of the nodes those executions were not properly run, and therefore this solution was not valid to test the performance.
+After that trial, the balancing in the faas solution was not working properly, so the solution had to be changed and the alternative approach was using jaas (jobs as a service), which is able to run docker images balancing the load between the whole docker swarm cluster. Using this solution, in an automated environment where the tasks were run automatically, in some of the nodes those executions were not properly run, and therefore this solution was not valid to test the performance.This implemented solution can be seen in <<img_jaas>>
+
+[#img_jaas,reftext='{figure-caption} {counter:figure-num}']
+.Jaas implemented solution of TASE
+image::images/TASE_jaas.png[width=800,align="center"]
+
 
 Discarding the previous two solutions, we opt for the solution done in implemented solution, using a Thales Alenia Space designed solution.
 
