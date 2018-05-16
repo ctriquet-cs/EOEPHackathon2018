@@ -12,7 +12,7 @@
 
 Furthermore, 52°North has been active in standardizing geoprocessing. Benjamin Pross is currently leading the Web Processing Service 2.0 SWG at OGC. The 52°North WPS implementation fully supports WPS 1.0.0 and 2.0 and is widely used. It has also been used in Testbed-13 Earth Observation Clouds thread.
 
-Since 52°North provides a WPS implementation and is involved in different project dealing Earth Observation data already, the EOEP Hackathon was a good opportunity for us to exercise and increase our knowledge.
+Since 52°North provides a WPS implementation and is involved in different projects dealing with Earth Observation data, 52°North has a high interest in the activities for standardizing the processing of large amounts of Earth Observation data.
 
 ==== Implemented Solution
 52°North has implemented an Application Deployment and Execution Service based on the 52°North javaPS framework. The framework fully supports the WPS 2.0 interface. The means to deploy and undeploy processes were implemented as WPS processs themselves. The process descriptions were aligned to the one specified in the OGC Testbed-13: Application Deployment and Execution Service Engineering Report (OGC 17-024). 
@@ -322,7 +322,7 @@ The process itself is a mockup, but sending an example execute request is possib
 ----
 
 ==== Experiences with AP & ADES
-The concept of the ADES works well with WPS and the 52°North WPS could be easily extended with the necessary functionality. WPS 2.0 processes are a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. The 52°North ADES was used for testing by several client developers during the Hackathon. It supports the deployment and execution of new processes based on Application Packages. The back-end implementation, i.e. deploying the Docker container specified in the Application Package was not trivial and we had to create a mock-up if this functionality. In Testbed-14 different approaches for enabling WPS with transactional functionality are explored. The Testbed-14 WPS-T ER will specify, how transactional behavior can be implemented for WPS using additional dedicated operations for deploying and undeploying processes. 
+The concept of the ADES works well with WPS and the 52°North WPS could be easily extended with the necessary functionality. WPS 2.0 processes are a good means for deploying Application Packages and creating new WPS processes. The input- and  output-formats can be described in a standardized way and generic clients are able to execute the Deploy- and UndeployProcess. The 52°North ADES was used for testing by several client developers during the Hackathon. It supports the deployment and execution of new processes based on Application Packages. The back-end implementation, i.e. deploying the Docker container specified in the Application Package required more time than initially anticipated, so we had to create a mock-up for this functionality. In Testbed-14 different approaches for enabling WPS with transactional functionality are explored. The Testbed-14 WPS-T ER will specify, how transactional behavior can be implemented for WPS using additional dedicated operations for deploying and undeploying processes. 
 
 ==== Acknowledgement
 
