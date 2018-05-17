@@ -12,7 +12,7 @@
 // please describe briefly why you participated
 
 We are striving after development of interoperable research independent of cloud processing facilities to foster exchange and repeatability. In particular the Institute for Earth Observation at EURAC Research has the need to be able to run transparently applications on different clusters, where data and computing resources are available.
-The proposed exercise was perfectly in line with what we currently try to achieve in the in the *H2020 openEO project* ( http://openeo.eu ), where we are already developing a driver to connect the *openEO API* with the *OGC WC(P)S 2.0* and it processing extension. So participating in this hackathon gave as the possibility to implement and test web processing services based on processing chains organized in containers and link it to the RESTful services that we are currently defining and developing in the *openEO* project.
+The proposed hackathon was perfectly in line with what we currently try to achieve in the in the *H2020 openEO project* ( http://openeo.eu ), where we are already developing a driver to connect the *openEO API* with the *OGC WC(P)S 2.0* and it processing extension. So participating in this hackathon gave as the possibility to implement and test web processing services based on processing chains organized in containers and link it to the RESTful services that we are currently defining and developing in the *openEO* project.
 
 ==== Implemented Solution
 // please describe your implemented solution here. Provide as much detail as you think reasonable.
@@ -41,7 +41,7 @@ Those processes are also discoverable via openEO using the /processes endpoint o
 
 
 
-The GetCapabilites result for the service implemented:
+The GetCapabilites result for the service (wpseoproc) implemented:
 [source,xml]
 ----
 	<wps:ProcessOfferings>
@@ -74,15 +74,15 @@ The GetCapabilites result for the service implemented:
 ----
 
 
-The implementation uses the proposed OWS Context Document (OWC) to describe and deploy an application. This seems a very good standard to convey this information and approach to validate the capabilities on a given cluster.
+The implementation uses the proposed OWS Context Document (OWC) to describe and deploy an application. This seems a very good standard and convenient way to convey and validate the application capabilities on a given cluster.
 
-The OWC document is passed as parameter to the WPS DeployProcess operation
+The OWC document is passed as parameter to the WPS **DeployProcess** operation offering.
 
-The ADES, appart exposing the services, will also perform the following tasks:
+The ADES server, appart exposing the listed WPS services, will also perform the following tasks:
 
-- Store all application related information found in the OWS context Document in a persistent database
-- Evaluate and execute the offerings defined in the OWC document, in particular owc offerings related to pulling a given container from the repository, executing a given OpenSearc Query on a catalogue (optional), and executing the defined wpsProcessOffering
-- Upon the ExecuteProcess operation, the ADES will also perform the "staging" operation on the data referenced, i.e Download the data in a local process defined workskpace ($ApplicationRunStore). The staging is done based on the policies defined in the ProcessParameters (sections -> cloud:.., data:...) and considers, if any defined, the results of the search offering defined in the OWC document. In addition, also the configuration defined in the 'data:" section of the ProcessParameters are evaulated and translated to data references --> this allows actually on one side the application developer to have a defined dataset, and also allows the user eventually to execute a paricular or different dataset, of course only if this is validated also by the OWC document (i.e. </georss:where>, <dc:date>)
+- Store and manage all application related information found in the OWS context Document in a persistent database
+- Evaluate and execute the offerings defined in the OWC document, in particular owc offerings related to pulling a given container from the repository, executing a given OpenSearch Query on a given catalogue (optional), and executing the defined wpsProcessOffering
+- Upon the **ExecuteProcess** operation, the ADES will also perform the "Staging" operation on the data referenced, i.e Download the data in a local process defined workskpace, which in our imlementation is defined as $ApplicationRunStore. The staging is performed based on the policies defined in the ProcessParameters (sections -> cloud:.., data:...) and considers, if any defined, the results of the search offering defined in the OWC document. Also the configuration defined in the 'data:" section of the ProcessParameters are evaulated and translated to data references --> this allows actually on one side the application developer to have a defined dataset which is forseen to work with the application, and also allows the user eventually to provide  a paricular or even different dataset, of course only if this is validated also by the OWC document definitions (i.e. </georss:where>, <dc:date>)
 
 
 
@@ -193,11 +193,11 @@ The parameters for the operation are the following:
 The ProcessParameters are organized in the following sections and contain a defined set of switches and configurations applicable to a process:
 
 - **cloud:** Cloud specific parameters (ex. Amount of requested resources, Maximum amount to be spent, Timeout policy for killing a process, Scheduler used, etc.)
-- **container:** Parameters which are specific to the environment and job scheduler used (eg. docker, kubernetes, Apache Hadoop, etc..). 
-- **application:** Parameters specific to the application deployed inside a container, which in the simplest general case is the path to the Application entry point (script)
-- **data:** Data reference passed to the application. If null, the data referece is adopted by the results of the search offering in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch).
+- **container:** Parameters which are specific to a given environment where the process is intended to be run (eg. docker, kubernetes, Apache Hadoop, etc..). 
+- **application:** Parameters specific to the application deployed inside a container, which in the simplest general case is the path to a standard Application entry point (e.g ../run.sh script)
+- **data:** List of data references passed to the application. If null, the data referece is adopted by the results of the OpenSearch offering in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch). This can be a list of 1 - n Files or URLs.
 
-Here is a sample for the ProcessParameters: 
+This is a sample for the ProcessParameters: 
 **ProcessParameters:**
 [source,json]
 ----
@@ -214,12 +214,30 @@ The variable **$ApplicationRunStore** is a path placeholder and consists in this
 
 The variable **$Data** is a placeholder for the data referenced by the user, or by a search offering operation defined in the OWC document (code=http://www.opengis.net/spec/owc-atom/1.0/opensearch)
 
+The Parameters are validated by the ADES before executing the process
+
+If the request is validated and executed sucessfully the response includes an indentifier of the job executed (JobID)
+
 **Response:**
 
 - **StatusInfo** Execute Response with Status and JobID elements
 
+e.g Response (WPS 2.0)
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:StatusInfo xmlns:wps="http://www.opengis.net/wps/2.0"
+	xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wps/2.0 ../wps.xsd">
+	<wps:JobID>809963556</wps:JobID>
+	<wps:Status>Running</wps:Status>
+	<atom:link rel="monitor"
+		href="http://saocompute.eurac.edu/wpseoproc/jobs/809963556" />
+	<atom:link rel="cancel"
+		href="http://saocompute.eurac.edu/wpseoproc/jobs/cancel/809963556" />
+</wps:StatusInfo>
+----
 
-If the request is validated and executed sucessfully the response includes an indentifier of the job executed (JobID)
 
 In the case where a process is executed in parallel on a larger set of files, the response includes a list of JobIDs. This is convenient so that a GetStatus($JobID) operation can be executed on each single child process.
 
@@ -228,6 +246,8 @@ In the case where a process is executed in parallel on a larger set of files, th
 
 ==== Proposed Alternatives
 // if you have any recommendations on other solutions, please describe them here
+
+
 
 ==== Experiences with AP & ADES
 // please describe your experiences with the Application Package and the Application Deployment and Execution Service here.
